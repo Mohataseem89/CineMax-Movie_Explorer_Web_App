@@ -2,6 +2,10 @@
 
 A beautiful, fast, and responsive movie browsing app built with **React**, **Vite**, **Tailwind CSS**, and **TMDb API**. CineMax lets you discover trending movies, search by genre, view detailed information, and curate your personal watchlist.
 
+
+[Cinemax](https://cine-maxapp.vercel.app/)
+
+
 ---
 
 ## 🚀 Features
