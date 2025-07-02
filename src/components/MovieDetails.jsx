@@ -1,0 +1,177 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+function MovieDetails({
+  watchlist,
+  handleAddwatchlist,
+  handleremovewatchlist,
+}) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [movie, setMovie] = useState(null);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=c45a857c193f6302f2b5061c3b85e743&language=en-US`
+        );
+        const data = await res.json();
+        setMovie(data);
+
+        const simRes = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=c45a857c193f6302f2b5061c3b85e743&language=en-US`
+        );
+        const simData = await simRes.json();
+        setSimilarMovies(simData.results || []);
+
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchMovieDetails();
+  }, [id]);
+
+  const isInWatchlist = watchlist.some((item) => item.id === parseInt(id));
+
+  if (loading)
+    return (
+      <div className="text-center text-lg font-medium text-black py-16">
+        🎬 Loading movie...
+      </div>
+    );
+
+  if (error) {
+    return (
+      <div className="text-center py-16 px-4">
+        <h2 className="text-3xl font-bold text-red-500 mb-4">
+          ⚠️ Error: {error}
+        </h2>
+        <button
+          onClick={() => navigate("/")}
+          className="bg-gradient-to-r from-red-500 to-pink-500 hover:brightness-110 text-white px-6 py-2 rounded-full font-medium"
+        >
+          ⬅ Back
+        </button>
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="text-center py-16 px-4">
+        <h2 className="text-3xl font-bold text-gray-400 mb-4">
+          🎞️ Movie not found
+        </h2>
+        <button
+          onClick={() => navigate("/")}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium"
+        >
+          ⬅ Go Back Home
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-12 text-black">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-6 text-2xl text-blue-400 hover:underline hover:text-blue-600"
+      >
+        ← Back
+      </button>
+
+      <div className="flex flex-col md:flex-row gap-10 items-start">
+        <div className="md:w-1/3 w-full">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            className="w-full rounded-xl shadow-2xl border border-gray-700"
+          />
+        </div>
+
+        <div className="md:w-2/3 w-full">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
+            {movie.title}
+          </h1>
+
+          <div className="flex items-center space-x-4 mb-6 text-sm md:text-base">
+            <span className="bg-yellow-400 text-black px-3 py-1 rounded-full font-semibold">
+              ⭐ {movie.vote_average?.toFixed(1)}
+            </span>
+            <span className="text-gray-400">
+              📅 {movie.release_date?.split("-")[0]}
+            </span>
+            <span className="text-gray-400">⏱ {movie.runtime} min</span>
+          </div>
+
+          <p className="text-gray-900 leading-relaxed mb-6 text-lg">
+            {movie.overview}
+          </p>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-2">🎭 Genres</h3>
+            <div className="flex flex-wrap gap-2">
+              {movie.genres?.map((genre) => (
+                <span
+                  key={genre.id}
+                  className="bg-gradient-to-r from-gray-700 to-gray-800 text-white px-4 py-1 rounded-full text-sm font-medium shadow"
+                >
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              isInWatchlist
+                ? handleremovewatchlist(movie)
+                : handleAddwatchlist(movie);
+            }}
+            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 shadow-lg hover:scale-105 ${
+              isInWatchlist
+                ? "bg-red-600 hover:bg-red-700 text-gray-900"
+                : "bg-blue-600 hover:bg-blue-700 text-gray-900"
+            }`}
+          >
+            {isInWatchlist ? "✖ Remove from Watchlist" : "➕ Add to Watchlist"}
+          </button>
+        </div>
+      </div>
+
+      {/*suggesatins or carousel for similar movis */}
+      {similarMovies.length > 0 && (
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-4">🎬 Similar Movies</h2>
+          <div className="flex overflow-x-auto gap-4 pb-2">
+            {similarMovies.map((simMovie) => (
+              <div
+                key={simMovie.id}
+                onClick={() => navigate(`/movie/${simMovie.id}`)}
+                className="min-w-[150px] cursor-pointer rounded-lg overflow-hidden bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${simMovie.poster_path}`}
+                  alt={simMovie.title}
+                  className="w-full h-[225px] object-cover"
+                />
+                <div className="text-sm p-2 text-center font-semibold truncate">
+                  {simMovie.title}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default MovieDetails;
