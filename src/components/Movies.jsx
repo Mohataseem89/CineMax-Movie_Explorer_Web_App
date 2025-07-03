@@ -26,12 +26,12 @@ const Movies = ({ handleAddwatchlist, handleremovewatchlist, watchlist }) => {
   }, [pageNo]);
 
   return (
-    <div className="min-h-screen px-3 sm:px-10 lg:px-12 py-6 bg-gradient-to-b from-gray-950 via-black to-gray-900 text-white">
-      <h2 className="text-center text-3xl sm:text-4xl font-extrabold mb-8 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-purple-600">
+    <div className="min-h-screen px-4 sm:px-10 lg:px-12 py-6 bg-gradient-to-b from-gray-950 via-black to-gray-900 text-white">
+      <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-8 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-purple-600">
         🎬 Trending Movies
       </h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
         {movies.map((movie) => (
           <MoviesCards
             key={movie.id}
