@@ -26,7 +26,7 @@ const Movies = ({ handleAddwatchlist, handleremovewatchlist, watchlist }) => {
   }, [pageNo]);
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-12 py-6 bg-gradient-to-b from-gray-950 via-black to-gray-900 text-white">
+    <div className="min-h-screen px-3 sm:px-10 lg:px-12 py-6 bg-gradient-to-b from-gray-950 via-black to-gray-900 text-white">
       <h2 className="text-center text-3xl sm:text-4xl font-extrabold mb-8 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-purple-600">
         🎬 Trending Movies
       </h2>
