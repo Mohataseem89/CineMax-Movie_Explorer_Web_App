@@ -21,14 +21,14 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white backdrop-blur-md border-b border-gray-200 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+           <Link to={"/"}>  <div className="flex items-center space-x-3">
             <div className="w-11 h-11 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-white font-extrabold text-xl">🎬</span>
             </div>
             <h1 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-purple-500">
               CineMax
             </h1>
-          </div>
+          </div></Link>
 
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
