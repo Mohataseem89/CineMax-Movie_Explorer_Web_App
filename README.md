@@ -1,4 +1,4 @@
-# 🎨 CineMax - Movie Explorer & Watchlist App
+# CineMax - Movie Explorer & Watchlist App
 
 A beautiful, fast, and responsive movie browsing app built with **React**, **Vite**, **Tailwind CSS**, and **TMDb API**. CineMax lets you discover trending movies, search by genre, view detailed information, and curate your personal watchlist.
 
@@ -8,31 +8,31 @@ A beautiful, fast, and responsive movie browsing app built with **React**, **Vit
 
 ---
 
-## 🚀 Features
+##  Features
 
-* 🎥 **Explore Movies** – Browse trending and popular movies from TMDb.
-* 🔍 **Search & Filter** – Search movies by title and filter by genre.
-* 💑 **Detailed View** – Get full movie info: rating, release, runtime, overview, and genres.
-* ➕ **Watchlist** – Add/remove movies to your personal watchlist (saved using `localStorage`).
-* 🌐 **Client-side Routing** – Built with React Router for seamless navigation.
-* 💡 **Responsive UI** – Works great on mobile, tablet, and desktop.
-* ⚡ **Blazing Fast** – Built using Vite and optimized Tailwind CSS.
+*  **Explore Movies** – Browse trending and popular movies from TMDb.
+*  **Search & Filter** – Search movies by title and filter by genre.
+*  **Detailed View** – Get full movie info: rating, release, runtime, overview, and genres.
+*  **Watchlist** – Add/remove movies to your personal watchlist (saved using `localStorage`).
+*  **Client-side Routing** – Built with React Router for seamless navigation.
+*  **Responsive UI** – Works great on mobile, tablet, and desktop.
+*  **Blazing Fast** – Built using Vite and optimized Tailwind CSS.
 
 ---
 
-## 🧪 Tech Stack
+##  Tech Stack
 
 | Tech             | Description                      |
 | ---------------- | -------------------------------- |
-| ⚛️ React         | JavaScript library for UI        |
-| 🛍️ React Router | SPA routing                      |
-| 🎨 Tailwind CSS  | Utility-first CSS framework      |
-| ⚡ Vite           | Next-generation frontend tooling |
-| 🎥 TMDb API      | Movie data API                   |
+|  React         | JavaScript library for UI        |
+|  React Router | SPA routing                      |
+|  Tailwind CSS  | Utility-first CSS framework      |
+|  Vite           | Next-generation frontend tooling |
+|  TMDb API      | Movie data API                   |
 
 ---
 
-## 💼 Installation
+##  Installation
 
 Clone the repo and install dependencies:
 
@@ -50,7 +50,7 @@ npm run dev
 
 ---
 
-## 🔐 API Key Setup
+##  API Key Setup
 
 This app uses the [TMDb API](https://www.themoviedb.org/documentation/api). To run the app:
 
@@ -65,10 +65,10 @@ This app uses the [TMDb API](https://www.themoviedb.org/documentation/api). To r
 
 ---
 
-## 📆 Project Structure
+##  Project Structure
 
 ```
-## 📁 Folder Structure
+##  Folder Structure
 
 ```bash
 CinepMax/
@@ -98,7 +98,7 @@ CinepMax/
 
 ---
 
-## ⚖️ Deployment
+##  Deployment
 
 You can deploy this app easily on:
 
@@ -113,16 +113,16 @@ You can deploy this app easily on:
 
 ---
 
-## 📌 Upcoming Enhancements
+##  Upcoming Enhancements
 
-* ↻ Lazy loading images for faster performance
-* 🌃 Dark/light mode toggle
-* 🗳 Genre-based movie discovery
-* 📱 PWA support for offline access
+*  Lazy loading images for faster performance
+*  Dark/light mode toggle
+*  Genre-based movie discovery
+*  PWA support for offline access
 
 ---
 
-## 🙌 Acknowledgements
+##  Acknowledgements
 
 * [TMDb API](https://www.themoviedb.org/)
 * [Lucide Icons](https://lucide.dev/)
@@ -130,10 +130,10 @@ You can deploy this app easily on:
 
 ---
 
-## 🧑‍💻 Author
+##  Author
 
 **Mohataseem Khan**
-📧 Connect with me: [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/) • [GitHub](https://github.com/Mohataseem89)
+ Connect with me: [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/) • [GitHub](https://github.com/Mohataseem89)
 
 ---
 
