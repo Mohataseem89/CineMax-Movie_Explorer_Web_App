@@ -1,6 +1,7 @@
 # Changelog
 
-Notable changes to CineMax are documented here. The project follows semantic versioning for portfolio releases.
+Notable changes to Moviora
+ are documented here. The project follows semantic versioning for portfolio releases.
 
 ## [1.0.0] — 2026-09-01
 
@@ -26,7 +27,8 @@ Notable changes to CineMax are documented here. The project follows semantic ver
 - Reworked the visual system into a brighter cinematic interface
 - Corrected the upcoming collection to use future release dates
 - Improved hero and movie-detail backdrop visibility
-- Renamed the package to `cinemax-movie-explorer`
+- Renamed the package to `Moviora
+-movie-explorer`
 
 ### Security
 

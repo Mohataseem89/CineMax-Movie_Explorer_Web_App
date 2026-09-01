@@ -12,7 +12,8 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, details) {
-    console.error("CineMax encountered an unexpected error:", error, details);
+    console.error("Moviora
+ encountered an unexpected error:", error, details);
   }
 
   render() {
@@ -25,7 +26,8 @@ export default class ErrorBoundary extends Component {
             <AlertTriangle className="h-8 w-8" aria-hidden="true" />
           </span>
           <h1 className="mt-6 text-3xl font-black tracking-[-0.04em]">
-            CineMax hit an unexpected problem
+            Moviora
+ hit an unexpected problem
           </h1>
           <p className="mt-4 leading-7 text-gray-400">
             Your watchlist remains saved. Reload the application or return to

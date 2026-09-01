@@ -49,7 +49,8 @@ const WatchList = ({ watchlist, handleRemoveFromWatchlist }) => {
 
   usePageMetadata({
     title: "My Watchlist",
-    description: "Review and organize movies saved to your personal CineMax watchlist.",
+    description: "Review and organize movies saved to your personal Moviora
+ watchlist.",
     robots: "noindex,nofollow",
   });
 

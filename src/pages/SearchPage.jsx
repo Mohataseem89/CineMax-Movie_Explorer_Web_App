@@ -24,8 +24,10 @@ const SearchPage = ({
   usePageMetadata({
     title: query ? "Search results for " + query : "Search Movies",
     description: query
-      ? "Browse CineMax movie results for " + query + "."
-      : "Search CineMax for movies, cast information, trailers, and recommendations.",
+      ? "Browse Moviora
+ movie results for " + query + "."
+      : "Search Moviora
+ for movies, cast information, trailers, and recommendations.",
     robots: "noindex,follow",
   });
 
@@ -74,7 +76,8 @@ const SearchPage = ({
             <Search className="h-8 w-8" aria-hidden="true" />
           </span>
           <h1 className="mt-6 text-4xl font-black tracking-[-0.045em] sm:text-5xl">
-            Search CineMax
+            Search Moviora
+
           </h1>
           <p className="mt-4 leading-7 text-gray-400">
             Use the search field in the navigation to find movies by title.

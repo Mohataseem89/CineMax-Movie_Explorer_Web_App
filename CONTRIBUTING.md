@@ -1,6 +1,8 @@
-# Contributing to CineMax
+# Contributing to Moviora
 
-Thank you for improving CineMax. Keep changes focused, explain the user impact, and preserve the application's responsive and accessible behavior.
+
+Thank you for improving Moviora
+. Keep changes focused, explain the user impact, and preserve the application's responsive and accessible behavior.
 
 ## Set up the project
 

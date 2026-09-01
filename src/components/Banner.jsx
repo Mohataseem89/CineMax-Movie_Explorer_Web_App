@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getImageUrl, getTrendingMovies } from "../api/tmdb";
 
-const FEATURED_CACHE_KEY = "cinemax_featured_movies";
+const FEATURED_CACHE_KEY = "Moviora
+_featured_movies";
 
 function readFeaturedCache() {
   try {

@@ -9,7 +9,8 @@ const Footer = () => {
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-600">
               <Film className="h-5 w-5" aria-hidden="true" />
             </span>
-            <span className="text-lg font-black tracking-tight">CineMax</span>
+            <span className="text-lg font-black tracking-tight">Moviora
+</span>
           </div>
           <p>Find a great movie. Save it for later.</p>
         </div>

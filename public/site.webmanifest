@@ -1,6 +1,8 @@
 {
-  "name": "CineMax Movie Discovery",
-  "short_name": "CineMax",
+  "name": "Moviora
+ Movie Discovery",
+  "short_name": "Moviora
+",
   "description": "Discover movies, trailers, cast information, and recommendations.",
   "start_url": "/",
   "display": "standalone",

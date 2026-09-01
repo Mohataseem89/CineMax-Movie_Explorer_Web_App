@@ -5,7 +5,8 @@ import { usePageMetadata } from "../hooks/usePageMetadata";
 export default function NotFoundPage() {
   usePageMetadata({
     title: "Page Not Found",
-    description: "The requested CineMax page could not be found.",
+    description: "The requested Moviora
+ page could not be found.",
     robots: "noindex,nofollow",
   });
 

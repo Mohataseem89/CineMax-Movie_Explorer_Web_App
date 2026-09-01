@@ -1,19 +1,27 @@
-# CineMax — Modern Movie Discovery
+# Moviora
+ — Modern Movie Discovery
 
-[![CI](https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App/actions/workflows/ci.yml)
+[![CI](https://github.com/Mohataseem89/Moviora
+-Movie_Explorer_Web_App/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohataseem89/Moviora
+-Movie_Explorer_Web_App/actions/workflows/ci.yml)
 [![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![TMDb](https://img.shields.io/badge/Data-TMDb-01B4E4)](https://developer.themoviedb.org/)
 
-CineMax is a production-minded movie discovery application built with React and the TMDb API. It turns browsing into a focused workflow: discover with shareable filters, inspect rich movie and cast details, watch trailers, and keep a persistent personal watchlist.
+Moviora
+ is a production-minded movie discovery application built with React and the TMDb API. It turns browsing into a focused workflow: discover with shareable filters, inspect rich movie and cast details, watch trailers, and keep a persistent personal watchlist.
 
-[View live demo](https://cine-maxapp.vercel.app/) · [Browse the source](https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App) · [Read the case study](docs/PORTFOLIO.md)
+[View live demo](https://cine-maxapp.vercel.app/) · [Browse the source](https://github.com/Mohataseem89/Moviora
+-Movie_Explorer_Web_App) · [Read the case study](docs/PORTFOLIO.md)
 
-![CineMax branded social preview](public/og-cinemax.png)
+![Moviora
+ branded social preview](public/og-Moviora
+.png)
 
 ## Why this project matters
 
-CineMax demonstrates more than API rendering. The current implementation includes route-level code splitting, a reusable request layer with caching and duplicate-request deduplication, URL-driven filter state, resilient browser persistence, dynamic page metadata, structured data, accessibility affordances, and automated regression checks.
+Moviora
+ demonstrates more than API rendering. The current implementation includes route-level code splitting, a reusable request layer with caching and duplicate-request deduplication, URL-driven filter state, resilient browser persistence, dynamic page metadata, structured data, accessibility affordances, and automated regression checks.
 
 ### Product highlights
 
@@ -89,8 +97,10 @@ The application intentionally has no custom backend or account system. Watchlist
 - A [TMDb API key](https://developer.themoviedb.org/docs/getting-started)
 
 ```bash
-git clone https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App.git
-cd CineMax-Movie_Explorer_Web_App
+git clone https://github.com/Mohataseem89/Moviora
+-Movie_Explorer_Web_App.git
+cd Moviora
+-Movie_Explorer_Web_App
 npm install
 cp .env.example .env
 npm run dev
