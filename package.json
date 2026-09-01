@@ -1,6 +1,5 @@
 {
-  "name": "Moviora
--movie-explorer",
+  "name": "Moviora-movie-explorer",
   "private": true,
   "version": "1.0.0",
   "description": "A production-minded React movie discovery app powered by TMDb.",
@@ -8,12 +7,10 @@
   "homepage": "https://cine-maxapp.vercel.app/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mohataseem89/Moviora
--Movie_Explorer_Web_App.git"
+    "url": "git+https://github.com/Mohataseem89/Moviora-Movie_Explorer_Web_App.git"
   },
   "bugs": {
-    "url": "https://github.com/Mohataseem89/Moviora
--Movie_Explorer_Web_App/issues"
+    "url": "https://github.com/Mohataseem89/Moviora-Movie_Explorer_Web_App/issues"
   },
   "keywords": [
     "react",
