@@ -1,19 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Play, Info, Star, Calendar, X, Home, Bookmark } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Clapperboard, Info, Star, Calendar } from "lucide-react";
+import { getImageUrl, getTrendingMovies } from "../api/tmdb";
 
 //banner component
 const Banner = () => {
+  const navigate = useNavigate();
   const [currentMovie, setCurrentMovie] = useState(null);
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  // api_key from TMDB
-  const API_KEY = "a6a787a5f6c18c47ea6315bc5900436c";
-  const BASE_URL = "https://api.themoviedb.org/3";
-  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
-
   useEffect(() => {
-    fetchPopularMovies();
+    const controller = new AbortController();
+
+    const fetchFeaturedMovies = async () => {
+      try {
+        setLoading(true);
+        const data = await getTrendingMovies(controller.signal);
+        const featuredMovies = data.results
+          .filter((movie) => movie.backdrop_path)
+          .slice(0, 6);
+
+        setMovies(featuredMovies);
+        setCurrentMovie(featuredMovies[0] ?? null);
+      } catch (error) {
+        if (error.name === "AbortError") return;
+
+        console.error("Unable to load featured movies:", error);
+        const fallbackMovie = {
+          title: "Discover your next favorite movie",
+          overview:
+            "Browse popular movies, explore details, and build a personal watchlist.",
+          backdrop_path: null,
+          vote_average: null,
+          release_date: null,
+        };
+        setCurrentMovie(fallbackMovie);
+        setMovies([fallbackMovie]);
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    fetchFeaturedMovies();
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
@@ -31,33 +61,8 @@ const Banner = () => {
     }
   }, [currentIndex, movies]);
 
-  const fetchPopularMovies = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-      );
-
-      if (!response.ok) throw new Error("Failed to fetch movies");
-
-      const data = await response.json();
-      setMovies(data.results.slice(0, 8));
-      setCurrentMovie(data.results[0]);
-    } catch (error) {
-      console.error("Error:", error);
-      const fallbackMovie = {
-        title: "Avengers: Endgame",
-        overview:
-          "After the devastating events of Avengers: Infinity War, the universe is in ruins.",
-        backdrop_path: null,
-        vote_average: 8.4,
-        release_date: "2019-04-26",
-      };
-      setCurrentMovie(fallbackMovie);
-      setMovies([fallbackMovie]);
-    } finally {
-      setLoading(false);
-    }
+  const handleBrowseMovies = () => {
+    document.getElementById("popular-movies")?.scrollIntoView({ behavior: "smooth" });
   };
 
   if (loading) {
@@ -90,32 +95,17 @@ const Banner = () => {
 
   return (
     <div
-      className="relative h-screen min-h-96 flex items-center text-white overflow-hidden transition-all duration-1000 ease-in-out bg-cover bg-center bg-no-repeat"
+      className="relative flex h-[calc(100svh-77px)] min-h-[560px] items-center overflow-hidden bg-cover bg-center bg-no-repeat text-white transition-all duration-700 ease-in-out"
       style={{
         backgroundImage: currentMovie.backdrop_path
-          ? `linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%), url(${IMAGE_BASE_URL}${currentMovie.backdrop_path})`
+          ? `linear-gradient(135deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 52%, rgba(0,0,0,0.9) 100%), url(${getImageUrl(currentMovie.backdrop_path, "w1280")})`
           : "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
       }}
     >
-      <div className="absolute inset-0 opacity-20">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-white rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-7xl w-full mx-auto px-8 py-16">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-16 sm:px-8">
         <div className="max-w-3xl space-y-8">
           <div className="transform transition-all duration-1000 ease-out">
-            <h1 className="text-6xl md:text-7xl font-black mb-6 drop-shadow-2xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent leading-tight">
+            <h1 className="mb-6 bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-4xl font-black leading-tight text-transparent drop-shadow-2xl sm:text-6xl md:text-7xl">
               {currentMovie.title}
             </h1>
           </div>
@@ -130,7 +120,9 @@ const Banner = () => {
             <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
               <Calendar className="w-5 h-5 text-blue-400" />
               <span className="font-semibold">
-                {new Date(currentMovie.release_date).getFullYear()}
+                {currentMovie.release_date
+                  ? new Date(currentMovie.release_date).getFullYear()
+                  : "Coming soon"}
               </span>
             </div>
             <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full">
@@ -139,15 +131,26 @@ const Banner = () => {
           </div>
 
           <p className="text-xl leading-relaxed mb-8 drop-shadow-lg max-w-2xl opacity-90">
-            {currentMovie.overview?.substring(0, 250)}...
+            {currentMovie.overview?.length > 250
+              ? `${currentMovie.overview.substring(0, 250)}…`
+              : currentMovie.overview}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 rounded-lg text-lg font-bold cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center space-x-3">
-              <Play className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              <span>Watch Now</span>
+            <button
+              type="button"
+              onClick={handleBrowseMovies}
+              className="group flex cursor-pointer items-center justify-center space-x-3 rounded-lg bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:from-red-700 hover:to-red-800 hover:shadow-2xl"
+            >
+              <Clapperboard className="w-6 h-6 group-hover:scale-110 transition-transform" />
+              <span>Browse Movies</span>
             </button>
-            <button className="group bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-4 rounded-lg text-lg font-bold cursor-pointer transition-all duration-300 transform hover:scale-105 border border-white/30 flex items-center justify-center space-x-3">
+            <button
+              type="button"
+              disabled={!currentMovie.id}
+              onClick={() => currentMovie.id && navigate(`/movie/${currentMovie.id}`)}
+              className="group flex cursor-pointer items-center justify-center space-x-3 rounded-lg border border-white/30 bg-white/20 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
+            >
               <Info className="w-6 h-6 group-hover:scale-110 transition-transform" />
               <span>More Info</span>
             </button>
@@ -165,6 +168,7 @@ const Banner = () => {
                     : "bg-transparent border-white/50 hover:border-white"
                 }`}
                 onClick={() => setCurrentIndex(index)}
+                aria-label={`Show featured movie ${index + 1}: ${movies[index].title}`}
               />
             ))}
           </div>

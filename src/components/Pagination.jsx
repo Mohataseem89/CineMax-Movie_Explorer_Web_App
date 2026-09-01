@@ -13,6 +13,7 @@ const Pagination = ({
       <button
         onClick={handleprevpage}
         disabled={currentPage === 1 || loading}
+        aria-label="Go to previous page"
         className="flex items-center space-x-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 hover:shadow-lg"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -24,6 +25,7 @@ const Pagination = ({
       <button
         onClick={handlenextpage}
         disabled={loading}
+        aria-label="Go to next page"
         className="flex items-center space-x-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 hover:shadow-lg"
       >
         <span>Next</span>
