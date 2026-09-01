@@ -10,8 +10,7 @@
       ]
     },
     {
-      "source": "/(favicon.ico|favicon.svg|favicon-32.png|apple-touch-icon.png|icon-192.png|icon-512.png|og-Moviora
-.png)",
+      "source": "/(favicon.ico|favicon.svg|favicon-32.png|apple-touch-icon.png|icon-192.png|icon-512.png|og-cinemax.png)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -44,4 +43,3 @@
     }
   ]
 }
-
