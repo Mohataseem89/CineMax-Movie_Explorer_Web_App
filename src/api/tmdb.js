@@ -1,4 +1,4 @@
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const API_KEY = import.meta.env.API_KEY;
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const DEFAULT_CACHE_TIME = 5 * 60 * 1000;
@@ -37,7 +37,7 @@ async function tmdbRequest(
 ) {
   if (!API_KEY) {
     throw new Error(
-      "TMDb API key is missing. Add VITE_TMDB_API_KEY to your environment."
+      "TMDb API key is missing. Add API_KEY to your environment."
     );
   }
 
