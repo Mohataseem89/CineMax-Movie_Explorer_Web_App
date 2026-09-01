@@ -6,22 +6,69 @@
     "Segoe UI", sans-serif;
   background: #080a0f;
   color: #f5f7fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
 html {
+  min-width: 320px;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
   background: #080a0f;
 }
 
 button,
-a {
+a,
+input,
+select {
   -webkit-tap-highlight-color: transparent;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: rgba(220, 38, 38, 0.8);
+  color: white;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(248, 113, 113, 0.9);
+  outline-offset: 3px;
+}
+
+.hero-image {
+  animation: hero-fade 600ms ease-out both;
+}
+
+.movie-row {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-width: thin;
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

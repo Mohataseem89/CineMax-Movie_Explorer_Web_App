@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { CalendarDays, Clapperboard, Info, Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clapperboard, Info, Star, Calendar } from "lucide-react";
 import { getImageUrl, getTrendingMovies } from "../api/tmdb";
 
-//banner component
 const Banner = () => {
   const navigate = useNavigate();
   const [currentMovie, setCurrentMovie] = useState(null);
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -30,7 +30,7 @@ const Banner = () => {
         const fallbackMovie = {
           title: "Discover your next favorite movie",
           overview:
-            "Browse popular movies, explore details, and build a personal watchlist.",
+            "Browse popular movies, explore every detail, and keep a personal watchlist for movie night.",
           backdrop_path: null,
           vote_average: null,
           release_date: null,
@@ -47,134 +47,157 @@ const Banner = () => {
   }, []);
 
   useEffect(() => {
-    if (movies.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % movies.length);
-      }, 6000);
-      return () => clearInterval(interval);
-    }
+    if (movies.length <= 1) return undefined;
+
+    const interval = window.setInterval(() => {
+      setCurrentIndex((index) => (index + 1) % movies.length);
+    }, 7000);
+
+    return () => window.clearInterval(interval);
   }, [movies]);
 
   useEffect(() => {
-    if (movies.length > 0) {
-      setCurrentMovie(movies[currentIndex]);
-    }
+    if (movies.length > 0) setCurrentMovie(movies[currentIndex]);
   }, [currentIndex, movies]);
 
   const handleBrowseMovies = () => {
-    document.getElementById("popular-movies")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("popular-movies")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   if (loading) {
     return (
-      <div className="relative h-screen min-h-96 flex items-center justify-center text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-indigo-900/90"></div>
-        <div className="relative z-10 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Loading Cinematic Experience...
-          </h2>
+      <section className="relative min-h-[620px] overflow-hidden bg-[#0d1118] sm:min-h-[680px]">
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-900 via-gray-950 to-black" />
+        <div className="relative mx-auto flex min-h-[620px] max-w-[1600px] items-end px-5 pb-24 pt-20 sm:min-h-[680px] sm:px-8 lg:items-center lg:pb-20">
+          <div className="w-full max-w-2xl">
+            <div className="mb-5 h-5 w-40 rounded-full bg-white/10" />
+            <div className="mb-4 h-14 w-4/5 rounded-xl bg-white/10 sm:h-20" />
+            <div className="mb-8 h-24 max-w-xl rounded-xl bg-white/10" />
+            <div className="flex gap-3">
+              <div className="h-12 w-40 rounded-xl bg-white/10" />
+              <div className="h-12 w-36 rounded-xl bg-white/10" />
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     );
   }
 
-  if (!currentMovie) {
-    return (
-      <div className="relative h-screen min-h-96 flex items-center justify-center text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-900/90 via-purple-900/90 to-indigo-900/90"></div>
-        <div className="relative z-10 text-center">
-          <h2 className="text-3xl font-bold mb-4">Unable to load movies</h2>
-          <p className="text-lg opacity-80">
-            Please check your connection and try again.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  if (!currentMovie) return null;
+
+  const releaseYear = currentMovie.release_date
+    ? new Date(currentMovie.release_date).getFullYear()
+    : "Coming soon";
+  const backdropUrl = getImageUrl(currentMovie.backdrop_path, "w1280");
 
   return (
-    <div
-      className="relative flex h-[calc(100svh-77px)] min-h-[560px] items-center overflow-hidden bg-cover bg-center bg-no-repeat text-white transition-all duration-700 ease-in-out"
-      style={{
-        backgroundImage: currentMovie.backdrop_path
-          ? `linear-gradient(135deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 52%, rgba(0,0,0,0.9) 100%), url(${getImageUrl(currentMovie.backdrop_path, "w1280")})`
-          : "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
-      }}
+    <section
+      className="relative isolate min-h-[620px] overflow-hidden bg-[#0d1118] text-white sm:min-h-[680px]"
+      aria-labelledby="featured-movie-title"
     >
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-16 sm:px-8">
-        <div className="max-w-3xl space-y-8">
-          <div className="transform transition-all duration-1000 ease-out">
-            <h1 className="mb-6 bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-4xl font-black leading-tight text-transparent drop-shadow-2xl sm:text-6xl md:text-7xl">
-              {currentMovie.title}
-            </h1>
+      {backdropUrl ? (
+        <img
+          key={backdropUrl}
+          src={backdropUrl}
+          alt=""
+          fetchPriority="high"
+          className="hero-image absolute inset-0 h-full w-full object-cover object-center"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950 via-[#111827] to-black" />
+      )}
+
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/75 to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080a0f] via-transparent to-black/25" />
+
+      <div className="relative mx-auto flex min-h-[620px] max-w-[1600px] items-end px-5 pb-24 pt-20 sm:min-h-[680px] sm:px-8 sm:pb-28 lg:items-center lg:pb-20">
+        <div className="max-w-3xl">
+          <div className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-red-400 sm:text-sm">
+            <span className="h-px w-8 bg-red-500" />
+            Featured this week
           </div>
 
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              <span className="font-semibold text-lg">
-                {currentMovie.vote_average?.toFixed(1) || "N/A"}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-              <Calendar className="w-5 h-5 text-blue-400" />
-              <span className="font-semibold">
-                {currentMovie.release_date
-                  ? new Date(currentMovie.release_date).getFullYear()
-                  : "Coming soon"}
-              </span>
-            </div>
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full">
-              <span className="font-bold text-sm">NOW TRENDING</span>
-            </div>
+          <h1
+            id="featured-movie-title"
+            className="max-w-3xl text-[clamp(2.5rem,7vw,5.75rem)] font-black leading-[0.95] tracking-[-0.055em] text-white"
+          >
+            {currentMovie.title}
+          </h1>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-gray-200 sm:text-base">
+            <span className="flex items-center gap-2">
+              <Star
+                className="h-[18px] w-[18px] fill-amber-400 text-amber-400"
+                aria-hidden="true"
+              />
+              {currentMovie.vote_average?.toFixed(1) || "Not rated"}
+            </span>
+            <span className="flex items-center gap-2">
+              <CalendarDays className="h-[18px] w-[18px]" aria-hidden="true" />
+              {releaseYear}
+            </span>
+            <span className="rounded-md border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm">
+              Trending
+            </span>
           </div>
 
-          <p className="text-xl leading-relaxed mb-8 drop-shadow-lg max-w-2xl opacity-90">
-            {currentMovie.overview?.length > 250
-              ? `${currentMovie.overview.substring(0, 250)}…`
+          <p className="mt-6 max-w-2xl text-base leading-7 text-gray-200 sm:text-lg sm:leading-8">
+            {currentMovie.overview?.length > 220
+              ? currentMovie.overview.substring(0, 220) + "…"
               : currentMovie.overview}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={handleBrowseMovies}
-              className="group flex cursor-pointer items-center justify-center space-x-3 rounded-lg bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:from-red-700 hover:to-red-800 hover:shadow-2xl"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-red-600 px-6 font-bold text-white shadow-lg shadow-red-950/30 transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-red-500"
             >
-              <Clapperboard className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              <span>Browse Movies</span>
+              <Clapperboard className="h-5 w-5" aria-hidden="true" />
+              Browse movies
             </button>
             <button
               type="button"
               disabled={!currentMovie.id}
-              onClick={() => currentMovie.id && navigate(`/movie/${currentMovie.id}`)}
-              className="group flex cursor-pointer items-center justify-center space-x-3 rounded-lg border border-white/30 bg-white/20 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={() =>
+                currentMovie.id && navigate("/movie/" + currentMovie.id)
+              }
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 font-bold text-white backdrop-blur-md transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Info className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              <span>More Info</span>
+              <Info className="h-5 w-5" aria-hidden="true" />
+              View details
             </button>
           </div>
         </div>
 
         {movies.length > 1 && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
-            {movies.slice(0, 6).map((_, index) => (
+          <div
+            className="absolute bottom-8 left-5 right-5 flex max-w-md gap-2 sm:left-8"
+            aria-label="Featured movies"
+          >
+            {movies.map((movie, index) => (
               <button
-                key={index}
-                className={`w-4 h-4 rounded-full cursor-pointer transition-all duration-300 hover:scale-125 border-2 ${
-                  index === currentIndex
-                    ? "bg-white border-white shadow-lg"
-                    : "bg-transparent border-white/50 hover:border-white"
-                }`}
+                key={movie.id}
+                type="button"
                 onClick={() => setCurrentIndex(index)}
-                aria-label={`Show featured movie ${index + 1}: ${movies[index].title}`}
+                className={
+                  "h-1.5 flex-1 rounded-full transition-colors duration-200 " +
+                  (index === currentIndex
+                    ? "bg-red-500"
+                    : "bg-white/25 hover:bg-white/50")
+                }
+                aria-label={
+                  "Show featured movie " + (index + 1) + ": " + movie.title
+                }
+                aria-current={index === currentIndex ? "true" : undefined}
               />
             ))}
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

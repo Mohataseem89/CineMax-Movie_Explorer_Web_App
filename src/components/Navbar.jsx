@@ -1,90 +1,127 @@
-import React, { useState } from "react";
+import { Bookmark, Film, Home, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bookmark, Menu, X } from "lucide-react";
 
-const Navbar = () => {
+const Navbar = ({ watchlistCount }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
-    { name: "Home", path: "/", icon: <Home className="w-5 h-5" /> },
-    {
-      name: "Watchlist",
-      path: "/watchlist",
-      icon: <Bookmark className="w-5 h-5" />,
-    },
+    { name: "Home", path: "/", icon: Home },
+    { name: "Watchlist", path: "/watchlist", icon: Bookmark },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#080a0f]/95 text-white backdrop-blur-md transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-           <Link to={"/"}>  <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
-              <span className="text-white font-extrabold text-xl">🎬</span>
-            </div>
-            <h1 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-purple-500">
-              CineMax
-            </h1>
-          </div></Link>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080a0f]/90 text-white backdrop-blur-xl">
+      <nav
+        className="mx-auto max-w-[1600px] px-5 sm:px-8"
+        aria-label="Primary navigation"
+      >
+        <div className="flex h-[72px] items-center justify-between">
+          <Link
+            to="/"
+            className="group flex items-center gap-3 rounded-xl"
+            aria-label="CineMax home"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 shadow-lg shadow-red-950/40 transition-transform duration-200 group-hover:scale-105">
+              <Film className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="text-xl font-black tracking-[-0.03em] sm:text-2xl">
+              Cine<span className="text-red-500">Max</span>
+            </span>
+          </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`flex items-center gap-2 text-lg font-medium transition-all duration-300 ${
-                  location.pathname === link.path
-                    ? "text-white border-b-2 border-red-500"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                {link.icon}
-                {link.name}
-              </Link>
-            ))}
+          <div className="hidden items-center gap-2 md:flex">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = location.pathname === link.path;
+
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={
+                    "relative flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-semibold transition-colors " +
+                    (isActive
+                      ? "bg-white/10 text-white"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white")
+                  }
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                  {link.name}
+                  {link.name === "Watchlist" && watchlistCount > 0 && (
+                    <span className="flex min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[11px] font-bold text-white">
+                      {watchlistCount > 99 ? "99+" : watchlistCount}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              className="flex h-11 w-11 items-center justify-center rounded-lg text-gray-200 transition-colors hover:bg-white/10 hover:text-white"
-              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-navigation"
-            >
-              {menuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 text-gray-200 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+          >
+            {menuOpen ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
         </div>
 
-        {menuOpen && (
-          <div id="mobile-navigation" className="md:hidden mt-4 flex flex-col space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
-                  location.pathname === link.path
-                    ? "bg-red-600 text-white"
-                    : "text-gray-300 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                {link.icon}
-                {link.name}
-              </Link>
-            ))}
+        <div
+          id="mobile-navigation"
+          className={
+            "grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 md:hidden " +
+            (menuOpen
+              ? "grid-rows-[1fr] pb-4 opacity-100"
+              : "pointer-events-none grid-rows-[0fr] opacity-0")
+          }
+        >
+          <div className="min-h-0">
+            <div className="rounded-2xl border border-white/10 bg-[#11151c] p-2">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = location.pathname === link.path;
+
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    className={
+                      "flex min-h-12 items-center gap-3 rounded-xl px-4 font-semibold transition-colors " +
+                      (isActive
+                        ? "bg-red-600 text-white"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white")
+                    }
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                    <span className="flex-1">{link.name}</span>
+                    {link.name === "Watchlist" && watchlistCount > 0 && (
+                      <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs">
+                        {watchlistCount}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </header>
   );
 };
 

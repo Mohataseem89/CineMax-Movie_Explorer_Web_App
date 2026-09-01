@@ -1,4 +1,3 @@
-import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Pagination = ({
@@ -9,29 +8,40 @@ const Pagination = ({
   pageNo,
 }) => {
   return (
-    <div className="flex items-center justify-center space-x-4 mt-12">
+    <nav
+      className="mt-14 flex items-center justify-center gap-3 sm:mt-16"
+      aria-label="Movie results pagination"
+    >
       <button
+        type="button"
         onClick={handleprevpage}
         disabled={currentPage === 1 || loading}
+        className="inline-flex min-h-11 items-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 text-sm font-bold text-gray-200 transition-colors hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35 sm:gap-2 sm:px-5"
         aria-label="Go to previous page"
-        className="flex items-center space-x-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 hover:shadow-lg"
       >
-        <ChevronLeft className="w-5 h-5" />
-        <span>Previous</span>
+        <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+        <span className="hidden sm:inline">Previous</span>
       </button>
 
-      <div className="font-bold"> {pageNo} </div>
+      <span
+        className="flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-red-600 px-3 text-sm font-black text-white shadow-lg shadow-red-950/25"
+        aria-current="page"
+        aria-label={"Current page " + pageNo}
+      >
+        {pageNo}
+      </span>
 
       <button
+        type="button"
         onClick={handlenextpage}
         disabled={loading}
+        className="inline-flex min-h-11 items-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 text-sm font-bold text-gray-200 transition-colors hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35 sm:gap-2 sm:px-5"
         aria-label="Go to next page"
-        className="flex items-center space-x-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 hover:shadow-lg"
       >
-        <span>Next</span>
-        <ChevronRight className="w-5 h-5" />
+        <span className="hidden sm:inline">Next</span>
+        <ChevronRight className="h-4 w-4" aria-hidden="true" />
       </button>
-    </div>
+    </nav>
   );
 };
 
