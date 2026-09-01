@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { discoverMovies, getMovieGenres } from "../api/tmdb";
 import MovieResultsGrid from "../components/MovieResultsGrid";
 import Pagination from "../components/Pagination";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 
 const sortOptions = [
   { value: "popularity.desc", label: "Most popular" },
@@ -27,6 +28,12 @@ export default function DiscoverPage({
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  usePageMetadata({
+    title: "Discover Movies by Genre, Year and Rating",
+    description:
+      "Browse movies using genre, release year, rating, and popularity filters to quickly find your next watch.",
+  });
 
   const filters = useMemo(
     () => ({

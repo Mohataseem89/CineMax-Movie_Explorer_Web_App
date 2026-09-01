@@ -1,8 +1,40 @@
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+const DEFAULT_CACHE_TIME = 5 * 60 * 1000;
+const responseCache = new Map();
+const inFlightRequests = new Map();
 
-async function tmdbRequest(path, { params = {}, signal } = {}) {
+function waitForRequest(request, signal) {
+  if (!signal) return request;
+
+  if (signal.aborted) {
+    return Promise.reject(new DOMException("Request aborted", "AbortError"));
+  }
+
+  return new Promise((resolve, reject) => {
+    const handleAbort = () => {
+      reject(new DOMException("Request aborted", "AbortError"));
+    };
+
+    signal.addEventListener("abort", handleAbort, { once: true });
+    request.then(
+      (data) => {
+        signal.removeEventListener("abort", handleAbort);
+        resolve(data);
+      },
+      (error) => {
+        signal.removeEventListener("abort", handleAbort);
+        reject(error);
+      }
+    );
+  });
+}
+
+async function tmdbRequest(
+  path,
+  { params = {}, signal, cacheTime = DEFAULT_CACHE_TIME } = {}
+) {
   if (!API_KEY) {
     throw new Error(
       "TMDb API key is missing. Add VITE_TMDB_API_KEY to your environment."
@@ -15,20 +47,54 @@ async function tmdbRequest(path, { params = {}, signal } = {}) {
     )
   );
 
-  const url = new URL(API_BASE_URL + path);
-  url.search = new URLSearchParams({
-    api_key: API_KEY,
+  const publicParams = new URLSearchParams({
     language: "en-US",
     ...normalizedParams,
-  }).toString();
+  });
+  const requestKey = path + "?" + publicParams.toString();
+  const cached = responseCache.get(requestKey);
 
-  const response = await fetch(url, { signal });
-
-  if (!response.ok) {
-    throw new Error("TMDb request failed with status " + response.status + ".");
+  if (cached && cached.expiresAt > Date.now()) {
+    return waitForRequest(Promise.resolve(cached.data), signal);
   }
 
-  return response.json();
+  let request = inFlightRequests.get(requestKey);
+
+  if (!request) {
+    const url = new URL(API_BASE_URL + path);
+    url.search = new URLSearchParams({
+      api_key: API_KEY,
+      ...Object.fromEntries(publicParams),
+    }).toString();
+
+    request = fetch(url)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(
+            "TMDb request failed with status " + response.status + "."
+          );
+        }
+
+        const data = await response.json();
+        responseCache.set(requestKey, {
+          data,
+          expiresAt: Date.now() + cacheTime,
+        });
+
+        if (responseCache.size > 100) {
+          responseCache.delete(responseCache.keys().next().value);
+        }
+
+        return data;
+      })
+      .finally(() => {
+        inFlightRequests.delete(requestKey);
+      });
+
+    inFlightRequests.set(requestKey, request);
+  }
+
+  return waitForRequest(request, signal);
 }
 
 export function getPopularMovies(page = 1, signal) {
@@ -91,6 +157,7 @@ export function searchMovies(query, page = 1, signal) {
       include_adult: "false",
     },
     signal,
+    cacheTime: 60 * 1000,
   });
 }
 
@@ -119,7 +186,10 @@ export function discoverMovies(filters = {}, signal) {
 }
 
 export function getMovieGenres(signal) {
-  return tmdbRequest("/genre/movie/list", { signal });
+  return tmdbRequest("/genre/movie/list", {
+    signal,
+    cacheTime: 24 * 60 * 60 * 1000,
+  });
 }
 
 export function getMovieDetails(id, signal) {
@@ -136,15 +206,22 @@ export function getMovieBundle(id, signal) {
       append_to_response: "videos,credits,recommendations,similar",
     },
     signal,
+    cacheTime: 10 * 60 * 1000,
   });
 }
 
 export function getPersonDetails(id, signal) {
-  return tmdbRequest("/person/" + id, { signal });
+  return tmdbRequest("/person/" + id, {
+    signal,
+    cacheTime: 30 * 60 * 1000,
+  });
 }
 
 export function getPersonMovieCredits(id, signal) {
-  return tmdbRequest("/person/" + id + "/movie_credits", { signal });
+  return tmdbRequest("/person/" + id + "/movie_credits", {
+    signal,
+    cacheTime: 30 * 60 * 1000,
+  });
 }
 
 export function getImageUrl(path, size = "w500") {

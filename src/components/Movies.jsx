@@ -63,7 +63,7 @@ const Movies = ({
   return (
     <section
       id="popular-movies"
-      className="scroll-mt-24 bg-[#080a0f] py-16 text-white sm:py-20"
+      className="content-auto scroll-mt-24 bg-[#080a0f] py-16 text-white sm:py-20"
       aria-labelledby="popular-movies-title"
     >
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8">

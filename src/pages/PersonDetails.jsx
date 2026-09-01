@@ -7,6 +7,7 @@ import {
   getPersonMovieCredits,
 } from "../api/tmdb";
 import MovieResultsGrid from "../components/MovieResultsGrid";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 
 export default function PersonDetails({
   watchlist,
@@ -19,6 +20,26 @@ export default function PersonDetails({
   const [credits, setCredits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  usePageMetadata({
+    title: person?.name || "Person Profile",
+    description:
+      person?.biography?.slice(0, 155) ||
+      "Explore this film professional's biography and movie credits on CineMax.",
+    image: getImageUrl(person?.profile_path, "h632"),
+    type: "profile",
+    structuredData: person
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: person.name,
+          image: getImageUrl(person.profile_path, "h632"),
+          birthDate: person.birthday || undefined,
+          birthPlace: person.place_of_birth || undefined,
+          description: person.biography || undefined,
+        }
+      : undefined,
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -166,4 +187,3 @@ export default function PersonDetails({
     </article>
   );
 }
-

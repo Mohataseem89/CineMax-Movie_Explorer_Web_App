@@ -59,6 +59,11 @@ button:disabled {
   scrollbar-width: thin;
 }
 
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
 @keyframes hero-fade {
   from {
     opacity: 0;

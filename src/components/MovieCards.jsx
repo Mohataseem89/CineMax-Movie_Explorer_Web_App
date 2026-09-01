@@ -10,6 +10,7 @@ const MovieCards = ({
 }) => {
   const title = movie.title || movie.name || "Untitled movie";
   const isInWatchlist = watchlist.some((item) => item.id === movie.id);
+  const smallPosterUrl = getImageUrl(movie.poster_path, "w185");
   const posterUrl = getImageUrl(movie.poster_path, "w342");
   const releaseYear = movie.release_date?.slice(0, 4) || "TBA";
 
@@ -23,7 +24,9 @@ const MovieCards = ({
         >
           {posterUrl ? (
             <img
-              src={posterUrl}
+              src={smallPosterUrl}
+              srcSet={smallPosterUrl + " 185w, " + posterUrl + " 342w"}
+              sizes="(max-width: 640px) 42vw, (max-width: 1024px) 25vw, 190px"
               alt={title + " poster"}
               loading="lazy"
               decoding="async"

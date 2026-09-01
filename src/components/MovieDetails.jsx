@@ -12,6 +12,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getImageUrl, getMovieBundle } from "../api/tmdb";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 import MovieCards from "./MovieCards";
 import TrailerModal from "./TrailerModal";
 
@@ -80,6 +81,35 @@ export default function MovieDetails({
   const [activeTrailer, setActiveTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  usePageMetadata({
+    title: movie?.title || "Movie Details",
+    description:
+      movie?.overview?.slice(0, 155) ||
+      "Explore movie details, trailers, cast, crew, recommendations, and similar titles on CineMax.",
+    image: getImageUrl(movie?.backdrop_path, "w1280"),
+    type: "video.movie",
+    structuredData: movie
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Movie",
+          name: movie.title,
+          description: movie.overview || undefined,
+          image: getImageUrl(movie.poster_path, "w500"),
+          dateCreated: movie.release_date || undefined,
+          duration: movie.runtime ? "PT" + movie.runtime + "M" : undefined,
+          aggregateRating:
+            movie.vote_count > 0
+              ? {
+                  "@type": "AggregateRating",
+                  ratingValue: movie.vote_average,
+                  ratingCount: movie.vote_count,
+                  bestRating: 10,
+                }
+              : undefined,
+        }
+      : undefined,
+  });
 
   useEffect(() => {
     const controller = new AbortController();

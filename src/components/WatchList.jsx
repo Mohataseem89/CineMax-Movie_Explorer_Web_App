@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../api/tmdb";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 
 const GENRE_MAP = {
   28: "Action",
@@ -45,6 +46,12 @@ const WatchList = ({ watchlist, handleRemoveFromWatchlist }) => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("added");
   const [selectedGenre, setSelectedGenre] = useState("All");
+
+  usePageMetadata({
+    title: "My Watchlist",
+    description: "Review and organize movies saved to your personal CineMax watchlist.",
+    robots: "noindex,nofollow",
+  });
 
   const availableGenres = useMemo(() => {
     const genres = new Set();

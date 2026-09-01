@@ -86,7 +86,7 @@ export default function DiscoveryRows({
   }, []);
 
   return (
-    <section className="border-b border-white/[0.07] bg-[#0b0e14] py-16 sm:py-20">
+    <section className="content-auto border-b border-white/[0.07] bg-[#0b0e14] py-16 sm:py-20">
       <div className="mx-auto max-w-[1600px] px-5 sm:px-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>

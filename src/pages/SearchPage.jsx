@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { searchMovies } from "../api/tmdb";
 import MovieResultsGrid from "../components/MovieResultsGrid";
 import Pagination from "../components/Pagination";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 import { saveRecentSearch } from "../utils/searchHistory";
 
 const SearchPage = ({
@@ -19,6 +20,14 @@ const SearchPage = ({
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(Boolean(query));
   const [error, setError] = useState("");
+
+  usePageMetadata({
+    title: query ? "Search results for " + query : "Search Movies",
+    description: query
+      ? "Browse CineMax movie results for " + query + "."
+      : "Search CineMax for movies, cast information, trailers, and recommendations.",
+    robots: "noindex,follow",
+  });
 
   useEffect(() => {
     if (!query) {

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /search
+Disallow: /watchlist
+
+Sitemap: https://cine-maxapp.vercel.app/sitemap.xml
+

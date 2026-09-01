@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Banner from "./components/Banner";
-import DiscoveryRows from "./components/DiscoveryRows";
 import Footer from "./components/Footer";
-import MovieDetails from "./components/MovieDetails";
-import Movies from "./components/Movies";
 import Navbar from "./components/Navbar";
+import PageLoader from "./components/PageLoader";
 import Toast from "./components/Toast";
-import WatchList from "./components/WatchList";
-import DiscoverPage from "./pages/DiscoverPage";
-import PersonDetails from "./pages/PersonDetails";
-import SearchPage from "./pages/SearchPage";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const DiscoverPage = lazy(() => import("./pages/DiscoverPage"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const PersonDetails = lazy(() => import("./pages/PersonDetails"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const MovieDetails = lazy(() => import("./components/MovieDetails"));
+const WatchList = lazy(() => import("./components/WatchList"));
 
 function App() {
   const [watchlist, setWatchlist] = useState([]);
@@ -72,39 +73,31 @@ function App() {
       <Navbar watchlistCount={watchlist.length} />
 
       <main id="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Banner />
-                <DiscoveryRows {...discoveryProps} />
-                <Movies {...discoveryProps} />
-              </>
-            }
-          />
-          <Route path="/discover" element={<DiscoverPage {...discoveryProps} />} />
-          <Route path="/search" element={<SearchPage {...discoveryProps} />} />
-          <Route
-            path="/watchlist"
-            element={
-              <WatchList
-                watchlist={watchlist}
-                handleRemoveFromWatchlist={handleRemoveFromWatchlist}
-              />
-            }
-          />
-          <Route path="/movie/:id" element={<MovieDetails {...discoveryProps} />} />
-          <Route path="/person/:id" element={<PersonDetails {...discoveryProps} />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<HomePage {...discoveryProps} />} />
+            <Route path="/discover" element={<DiscoverPage {...discoveryProps} />} />
+            <Route path="/search" element={<SearchPage {...discoveryProps} />} />
+            <Route
+              path="/watchlist"
+              element={
+                <WatchList
+                  watchlist={watchlist}
+                  handleRemoveFromWatchlist={handleRemoveFromWatchlist}
+                />
+              }
+            />
+            <Route path="/movie/:id" element={<MovieDetails {...discoveryProps} />} />
+            <Route path="/person/:id" element={<PersonDetails {...discoveryProps} />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />
-
       <Toast key={toast?.id} toast={toast} onClose={() => setToast(null)} />
     </BrowserRouter>
   );
 }
 
 export default App;
-

@@ -23,6 +23,12 @@ CineMax is a responsive movie-discovery application powered by the TMDb API. It 
 - Accessible watchlist controls and user feedback notifications
 - Loading, error, fallback, and retry states
 - Client-side routing with Vercel SPA rewrites
+- Route-level code splitting with lightweight page fallbacks
+- In-memory TMDb response caching and duplicate-request deduplication
+- Responsive poster and backdrop image delivery
+- Dynamic titles, descriptions, canonical URLs, and social metadata
+- Movie and person structured data, robots.txt, and sitemap.xml
+- Installable web-app manifest and responsive CineMax favicon set
 
 ## Technology
 
@@ -87,8 +93,12 @@ src/
 │   └── WatchList.jsx
 ├── pages/
 │   ├── DiscoverPage.jsx
+│   ├── HomePage.jsx
+│   ├── NotFoundPage.jsx
 │   ├── PersonDetails.jsx
 │   └── SearchPage.jsx
+├── hooks/
+│   └── usePageMetadata.js
 ├── utils/
 │   └── searchHistory.js
 ├── App.jsx
@@ -98,7 +108,7 @@ src/
 
 ## Deployment
 
-The repository includes `vercel.json`, which rewrites application routes to `index.html`. This allows direct visits and refreshes on routes such as `/movie/:id`, `/person/:id`, `/discover`, and `/search`.
+The repository includes `vercel.json`, which rewrites application routes to `index.html`. This allows direct visits and refreshes on routes such as `/movie/:id`, `/person/:id`, `/discover`, and `/search`. It also adds long-lived caching for hashed build assets and security-focused response headers.
 
 Add `VITE_TMDB_API_KEY` to the Vercel project environment before deploying.
 
@@ -114,6 +124,5 @@ Movie information and images are provided by [The Movie Database](https://www.th
 
 - [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/)
 - [GitHub](https://github.com/Mohataseem89)
-
 
 > Made with ❤️ for movie lovers.
