@@ -1,9 +1,11 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import PageLoader from "./components/PageLoader";
+import ScrollToTop from "./components/ScrollToTop";
 import Toast from "./components/Toast";
+import { useWatchlist } from "./hooks/useWatchlist";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const DiscoverPage = lazy(() => import("./pages/DiscoverPage"));
@@ -14,7 +16,7 @@ const MovieDetails = lazy(() => import("./components/MovieDetails"));
 const WatchList = lazy(() => import("./components/WatchList"));
 
 function App() {
-  const [watchlist, setWatchlist] = useState([]);
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [toast, setToast] = useState(null);
 
   const showToast = (message, tone = "success") => {
@@ -22,38 +24,18 @@ function App() {
   };
 
   const handleAddToWatchlist = (movie) => {
-    const isAlreadySaved = watchlist.some((item) => item.id === movie.id);
-
-    if (isAlreadySaved) {
+    if (!addToWatchlist(movie)) {
       showToast("This movie is already in your watchlist.", "info");
       return;
     }
 
-    const updatedWatchlist = [...watchlist, movie];
-    localStorage.setItem("moviesapp", JSON.stringify(updatedWatchlist));
-    setWatchlist(updatedWatchlist);
     showToast((movie.title || movie.name) + " added to your watchlist.");
   };
 
   const handleRemoveFromWatchlist = (movie) => {
-    const updatedWatchlist = watchlist.filter((item) => item.id !== movie.id);
-    localStorage.setItem("moviesapp", JSON.stringify(updatedWatchlist));
-    setWatchlist(updatedWatchlist);
+    removeFromWatchlist(movie.id);
     showToast((movie.title || movie.name) + " removed from your watchlist.", "info");
   };
-
-  useEffect(() => {
-    const storedMovies = localStorage.getItem("moviesapp");
-    if (!storedMovies) return;
-
-    try {
-      const parsedMovies = JSON.parse(storedMovies);
-      setWatchlist(Array.isArray(parsedMovies) ? parsedMovies : []);
-    } catch (error) {
-      console.error("Unable to restore the watchlist:", error);
-      localStorage.removeItem("moviesapp");
-    }
-  }, []);
 
   const discoveryProps = {
     watchlist,
@@ -63,6 +45,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <a
         href="#main-content"
         className="fixed left-4 top-3 z-[100] -translate-y-24 rounded-lg bg-white px-4 py-2 font-semibold text-black transition-transform focus:translate-y-0"
@@ -72,7 +55,7 @@ function App() {
 
       <Navbar watchlistCount={watchlist.length} />
 
-      <main id="main-content">
+      <main id="main-content" tabIndex="-1" className="outline-none">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<HomePage {...discoveryProps} />} />

@@ -66,8 +66,13 @@ async function tmdbRequest(
       api_key: API_KEY,
       ...Object.fromEntries(publicParams),
     }).toString();
+    const requestController = new AbortController();
+    const requestTimeout = window.setTimeout(
+      () => requestController.abort(),
+      15000
+    );
 
-    request = fetch(url)
+    request = fetch(url, { signal: requestController.signal })
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(
@@ -87,7 +92,16 @@ async function tmdbRequest(
 
         return data;
       })
+      .catch((error) => {
+        if (error.name === "AbortError") {
+          throw new Error(
+            "TMDb took too long to respond. Please check your connection and try again."
+          );
+        }
+        throw error;
+      })
       .finally(() => {
+        window.clearTimeout(requestTimeout);
         inFlightRequests.delete(requestKey);
       });
 

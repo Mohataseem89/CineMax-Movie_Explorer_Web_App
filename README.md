@@ -29,6 +29,10 @@ CineMax is a responsive movie-discovery application powered by the TMDb API. It 
 - Dynamic titles, descriptions, canonical URLs, and social metadata
 - Movie and person structured data, robots.txt, and sitemap.xml
 - Installable web-app manifest and responsive CineMax favicon set
+- Safe watchlist and search-history persistence with malformed-data recovery
+- Global application error recovery and TMDb request timeouts
+- Keyboard-accessible search suggestions, mobile navigation, and trailer modal
+- Automated regression tests for watchlist and recent-search behavior
 
 ## Technology
 
@@ -68,6 +72,8 @@ Environment variables prefixed with `VITE_` are included in the browser bundle. 
 npm run dev      # Start the development server
 npm run build    # Create a production build
 npm run lint     # Run ESLint
+npm run test     # Run regression tests
+npm run check    # Run lint, tests, and the production build
 npm run preview  # Preview the production build
 ```
 
@@ -80,6 +86,7 @@ src/
 ├── components/
 │   ├── Banner.jsx
 │   ├── DiscoveryRows.jsx
+│   ├── ErrorBoundary.jsx
 │   ├── Footer.jsx
 │   ├── MovieCards.jsx
 │   ├── MovieDetails.jsx
@@ -87,7 +94,9 @@ src/
 │   ├── Movies.jsx
 │   ├── Navbar.jsx
 │   ├── Pagination.jsx
+│   ├── PageLoader.jsx
 │   ├── SearchBar.jsx
+│   ├── ScrollToTop.jsx
 │   ├── TrailerModal.jsx
 │   ├── Toast.jsx
 │   └── WatchList.jsx
@@ -98,9 +107,12 @@ src/
 │   ├── PersonDetails.jsx
 │   └── SearchPage.jsx
 ├── hooks/
-│   └── usePageMetadata.js
+│   ├── usePageMetadata.js
+│   └── useWatchlist.js
 ├── utils/
-│   └── searchHistory.js
+│   ├── searchHistory.js
+│   ├── storage.js
+│   └── watchlist.js
 ├── App.jsx
 ├── index.css
 └── main.jsx
@@ -124,5 +136,6 @@ Movie information and images are provided by [The Movie Database](https://www.th
 
 - [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/)
 - [GitHub](https://github.com/Mohataseem89)
+
 
 > Made with ❤️ for movie lovers.

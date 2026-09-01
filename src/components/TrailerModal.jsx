@@ -1,21 +1,53 @@
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function TrailerModal({ trailer, onClose }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const previousFocusRef = useRef(null);
+
   useEffect(() => {
     if (!trailer) return undefined;
 
+    previousFocusRef.current = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const focusFrame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = dialogRef.current?.querySelectorAll(
+        'button, a[href], iframe, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusableElements?.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
     };
+
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(focusFrame);
       window.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus?.();
     };
   }, [trailer, onClose]);
 
@@ -30,6 +62,7 @@ export default function TrailerModal({ trailer, onClose }) {
       }}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="trailer-title"
@@ -40,10 +73,10 @@ export default function TrailerModal({ trailer, onClose }) {
             {trailer.name || "Official trailer"}
           </h2>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            autoFocus
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
             aria-label="Close trailer"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -52,7 +85,11 @@ export default function TrailerModal({ trailer, onClose }) {
         <div className="aspect-video bg-black">
           <iframe
             className="h-full w-full"
-            src={"https://www.youtube-nocookie.com/embed/" + trailer.key + "?autoplay=1&rel=0"}
+            src={
+              "https://www.youtube-nocookie.com/embed/" +
+              trailer.key +
+              "?autoplay=1&rel=0"
+            }
             title={trailer.name || "Movie trailer"}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -62,4 +99,3 @@ export default function TrailerModal({ trailer, onClose }) {
     </div>
   );
 }
-

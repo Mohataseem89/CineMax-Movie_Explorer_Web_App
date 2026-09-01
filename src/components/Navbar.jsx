@@ -1,15 +1,29 @@
 import { Bookmark, Compass, Film, Home, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 const Navbar = ({ watchlistCount }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+
+    const handleEscape = (event) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [menuOpen]);
 
   const navLinks = [
     { name: "Home", path: "/", icon: Home },
@@ -71,6 +85,7 @@ const Navbar = ({ watchlistCount }) => {
           </div>
 
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 text-gray-200 transition-colors hover:bg-white/10 hover:text-white md:hidden"
@@ -88,6 +103,8 @@ const Navbar = ({ watchlistCount }) => {
 
         <div
           id="mobile-navigation"
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
           className={
             "grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 md:hidden " +
             (menuOpen
@@ -135,4 +152,3 @@ const Navbar = ({ watchlistCount }) => {
 };
 
 export default Navbar;
-

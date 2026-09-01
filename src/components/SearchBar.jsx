@@ -18,6 +18,7 @@ const SearchBar = ({ compact = false, onNavigate }) => {
   const [recentSearches, setRecentSearches] = useState(getRecentSearches);
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   useEffect(() => {
     if (location.pathname === "/search") {
@@ -59,6 +60,7 @@ const SearchBar = ({ compact = false, onNavigate }) => {
 
     setRecentSearches(saveRecentSearch(normalizedQuery));
     setSuggestions([]);
+    setActiveIndex(-1);
     setFocused(false);
     navigate("/search?q=" + encodeURIComponent(normalizedQuery));
     onNavigate?.();
@@ -73,15 +75,41 @@ const SearchBar = ({ compact = false, onNavigate }) => {
     const title = movie.title || movie.name || query;
     setRecentSearches(saveRecentSearch(title));
     setSuggestions([]);
+    setActiveIndex(-1);
     setFocused(false);
     navigate("/movie/" + movie.id);
     onNavigate?.();
+  };
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === "Escape") {
+      setFocused(false);
+      setActiveIndex(-1);
+      event.currentTarget.blur();
+      return;
+    }
+
+    if (suggestions.length === 0) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveIndex((index) => (index + 1) % suggestions.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveIndex((index) =>
+        index <= 0 ? suggestions.length - 1 : index - 1
+      );
+    } else if (event.key === "Enter" && activeIndex >= 0) {
+      event.preventDefault();
+      handleSuggestion(suggestions[activeIndex]);
+    }
   };
 
   const showDropdown =
     focused &&
     (suggestions.length > 0 ||
       loading ||
+      query.trim().length >= 2 ||
       (query.trim().length === 0 && recentSearches.length > 0));
 
   return (
@@ -104,7 +132,11 @@ const SearchBar = ({ compact = false, onNavigate }) => {
           />
           <input
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setActiveIndex(-1);
+            }}
+            onKeyDown={handleInputKeyDown}
             type="search"
             placeholder={compact ? "Search movies" : "Search titles, genres and more"}
             autoComplete="off"
@@ -114,6 +146,13 @@ const SearchBar = ({ compact = false, onNavigate }) => {
             }
             aria-expanded={showDropdown}
             aria-controls={resultsId}
+            aria-autocomplete="list"
+            aria-activedescendant={
+              activeIndex >= 0
+                ? resultsId + "-option-" + activeIndex
+                : undefined
+            }
+            role="combobox"
           />
           {query && (
             <button
@@ -121,6 +160,7 @@ const SearchBar = ({ compact = false, onNavigate }) => {
               onClick={() => {
                 setQuery("");
                 setSuggestions([]);
+                setActiveIndex(-1);
               }}
               className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Clear movie search"
@@ -137,24 +177,38 @@ const SearchBar = ({ compact = false, onNavigate }) => {
           className="absolute left-0 right-0 top-[calc(100%+0.6rem)] z-[70] overflow-hidden rounded-2xl border border-white/10 bg-[#11151c]/98 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl"
         >
           {loading && (
-            <div className="flex items-center gap-3 px-3 py-4 text-sm text-gray-500">
+            <div
+              className="flex items-center gap-3 px-3 py-4 text-sm text-gray-500"
+              role="status"
+              aria-live="polite"
+            >
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/15 border-t-red-500" />
               Searching movies…
             </div>
           )}
 
           {!loading && suggestions.length > 0 && (
-            <ul aria-label="Movie suggestions">
-              {suggestions.map((movie) => {
+            <ul aria-label="Movie suggestions" role="listbox">
+              {suggestions.map((movie, index) => {
                 const title = movie.title || movie.name || "Untitled movie";
                 const poster = getImageUrl(movie.poster_path, "w92");
 
                 return (
                   <li key={movie.id}>
                     <button
+                      id={resultsId + "-option-" + index}
                       type="button"
                       onClick={() => handleSuggestion(movie)}
-                      className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-white/[0.07]"
+                      onMouseEnter={() => setActiveIndex(index)}
+                      className={
+                        "flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors " +
+                        (activeIndex === index
+                          ? "bg-white/[0.1]"
+                          : "hover:bg-white/[0.07]")
+                      }
+                      role="option"
+                      aria-selected={activeIndex === index}
+                      tabIndex={-1}
                     >
                       <span className="h-14 w-10 shrink-0 overflow-hidden rounded-lg bg-gray-900">
                         {poster ? (
@@ -194,6 +248,14 @@ const SearchBar = ({ compact = false, onNavigate }) => {
               </li>
             </ul>
           )}
+
+          {!loading &&
+            query.trim().length >= 2 &&
+            suggestions.length === 0 && (
+              <p className="px-3 py-4 text-sm text-gray-500" role="status">
+                No movie suggestions found.
+              </p>
+            )}
 
           {!loading &&
             query.trim().length === 0 &&
