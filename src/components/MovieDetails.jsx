@@ -152,6 +152,7 @@ export default function MovieDetails({
   }
 
   const isInWatchlist = watchlist.some((item) => item.id === movie.id);
+  const smallBackdropUrl = getImageUrl(movie.backdrop_path, "w780");
   const backdropUrl = getImageUrl(movie.backdrop_path, "w1280");
   const posterUrl = getImageUrl(movie.poster_path, "w500");
   const releaseYear = movie.release_date?.slice(0, 4) || "TBA";
@@ -163,12 +164,19 @@ export default function MovieDetails({
     <article className="min-h-screen bg-[#080a0f] text-white">
       <header className="relative isolate min-h-[560px] overflow-hidden sm:min-h-[640px]">
         {backdropUrl ? (
-          <img src={backdropUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <img
+            src={smallBackdropUrl}
+            srcSet={smallBackdropUrl + " 780w, " + backdropUrl + " 1280w"}
+            sizes="100vw"
+            alt=""
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080a0f] via-black/15 to-black/30" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080a0f]/60 to-transparent" />
 
         <div className="relative mx-auto flex min-h-[560px] max-w-[1600px] flex-col px-5 py-8 sm:min-h-[640px] sm:px-8">
           <button
@@ -184,7 +192,7 @@ export default function MovieDetails({
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-red-400 sm:text-sm">
               Movie details
             </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,7vw,5.5rem)] font-black leading-[0.98] tracking-[-0.055em]">
+            <h1 className="mt-4 text-[clamp(2.5rem,7vw,5.5rem)] font-black leading-[0.98] tracking-[-0.055em] [text-shadow:0_3px_22px_rgba(0,0,0,0.8)]">
               {movie.title}
             </h1>
             {movie.tagline && (
@@ -192,7 +200,7 @@ export default function MovieDetails({
                 “{movie.tagline}”
               </p>
             )}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-gray-200">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.95)]">
               <span className="flex items-center gap-2">
                 <Star className="h-[18px] w-[18px] fill-amber-400 text-amber-400" aria-hidden="true" />
                 {movie.vote_average?.toFixed(1) || "Not rated"}
@@ -387,4 +395,3 @@ export default function MovieDetails({
     </article>
   );
 }
-

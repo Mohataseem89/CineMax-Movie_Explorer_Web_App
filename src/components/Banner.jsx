@@ -3,30 +3,66 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getImageUrl, getTrendingMovies } from "../api/tmdb";
 
+const FEATURED_CACHE_KEY = "cinemax_featured_movies";
+
+function readFeaturedCache() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(FEATURED_CACHE_KEY));
+    if (
+      Array.isArray(cached?.movies) &&
+      cached.movies.length > 0
+    ) {
+      return cached.movies;
+    }
+  } catch {
+    localStorage.removeItem(FEATURED_CACHE_KEY);
+  }
+
+  return [];
+}
+
+function saveFeaturedCache(movies) {
+  try {
+    localStorage.setItem(
+      FEATURED_CACHE_KEY,
+      JSON.stringify({ movies, savedAt: Date.now() })
+    );
+  } catch {
+    // The banner still works when browser storage is unavailable.
+  }
+}
+
 const Banner = () => {
   const navigate = useNavigate();
-  const [currentMovie, setCurrentMovie] = useState(null);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(readFeaturedCache);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => readFeaturedCache().length === 0);
+  const currentMovie = movies[currentIndex] ?? null;
 
   useEffect(() => {
     const controller = new AbortController();
 
     const fetchFeaturedMovies = async () => {
+      const hasCachedMovies = readFeaturedCache().length > 0;
+
       try {
-        setLoading(true);
+        if (!hasCachedMovies) setLoading(true);
         const data = await getTrendingMovies(controller.signal);
         const featuredMovies = data.results
           .filter((movie) => movie.backdrop_path)
           .slice(0, 6);
 
-        setMovies(featuredMovies);
-        setCurrentMovie(featuredMovies[0] ?? null);
+        if (featuredMovies.length > 0) {
+          setMovies(featuredMovies);
+          setCurrentIndex(0);
+          saveFeaturedCache(featuredMovies);
+        }
       } catch (error) {
         if (error.name === "AbortError") return;
 
         console.error("Unable to load featured movies:", error);
+        if (hasCachedMovies) return;
+
         const fallbackMovie = {
           title: "Discover your next favorite movie",
           overview:
@@ -35,7 +71,6 @@ const Banner = () => {
           vote_average: null,
           release_date: null,
         };
-        setCurrentMovie(fallbackMovie);
         setMovies([fallbackMovie]);
       } finally {
         if (!controller.signal.aborted) setLoading(false);
@@ -57,7 +92,20 @@ const Banner = () => {
   }, [movies]);
 
   useEffect(() => {
-    if (movies.length > 0) setCurrentMovie(movies[currentIndex]);
+    if (movies.length <= 1) return undefined;
+
+    const nextMovie = movies[(currentIndex + 1) % movies.length];
+    const nextBackdrop = getImageUrl(
+      nextMovie.backdrop_path,
+      window.innerWidth < 900 ? "w780" : "w1280"
+    );
+
+    if (nextBackdrop) {
+      const image = new Image();
+      image.src = nextBackdrop;
+    }
+
+    return undefined;
   }, [currentIndex, movies]);
 
   const handleBrowseMovies = () => {
@@ -90,6 +138,7 @@ const Banner = () => {
   const releaseYear = currentMovie.release_date
     ? new Date(currentMovie.release_date).getFullYear()
     : "Coming soon";
+  const smallBackdropUrl = getImageUrl(currentMovie.backdrop_path, "w780");
   const backdropUrl = getImageUrl(currentMovie.backdrop_path, "w1280");
 
   return (
@@ -100,17 +149,20 @@ const Banner = () => {
       {backdropUrl ? (
         <img
           key={backdropUrl}
-          src={backdropUrl}
+          src={smallBackdropUrl}
+          srcSet={smallBackdropUrl + " 780w, " + backdropUrl + " 1280w"}
+          sizes="100vw"
           alt=""
           fetchPriority="high"
+          loading="eager"
+          decoding="async"
           className="hero-image absolute inset-0 h-full w-full object-cover object-center"
         />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-red-950 via-[#111827] to-black" />
       )}
 
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.84)_0%,rgba(0,0,0,0.66)_36%,rgba(0,0,0,0.22)_65%,rgba(0,0,0,0.03)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,15,0.1)_0%,transparent_55%,rgba(8,10,15,0.88)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#080a0f]/55 to-transparent" />
 
       <div className="relative mx-auto flex min-h-[620px] max-w-[1600px] items-end px-5 pb-24 pt-20 sm:min-h-[680px] sm:px-8 sm:pb-28 lg:items-center lg:pb-20">
         <div className="max-w-3xl">
@@ -121,12 +173,12 @@ const Banner = () => {
 
           <h1
             id="featured-movie-title"
-            className="max-w-3xl text-[clamp(2.5rem,7vw,5.75rem)] font-black leading-[0.95] tracking-[-0.055em] text-white"
+            className="max-w-3xl text-[clamp(2.5rem,7vw,5.75rem)] font-black leading-[0.95] tracking-[-0.055em] text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.8)]"
           >
             {currentMovie.title}
           </h1>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-gray-200 sm:text-base">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.95)] sm:text-base">
             <span className="flex items-center gap-2">
               <Star
                 className="h-[18px] w-[18px] fill-amber-400 text-amber-400"
@@ -143,7 +195,7 @@ const Banner = () => {
             </span>
           </div>
 
-          <p className="mt-6 max-w-2xl text-base leading-7 text-gray-200 sm:text-lg sm:leading-8">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.95)] sm:text-lg sm:leading-8">
             {currentMovie.overview?.length > 220
               ? currentMovie.overview.substring(0, 220) + "…"
               : currentMovie.overview}
