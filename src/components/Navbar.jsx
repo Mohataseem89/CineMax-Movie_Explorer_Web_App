@@ -1,4 +1,4 @@
-import { Bookmark, Compass, Film, Home, Menu, X } from "lucide-react";
+import { Bookmark, Clapperboard, Compass, Home, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
@@ -44,10 +44,11 @@ const Navbar = ({ watchlistCount }) => {
             aria-label="Moviora home"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 shadow-lg shadow-red-950/40 transition-transform duration-200 group-hover:scale-105">
-              <Film className="h-5 w-5" aria-hidden="true" />
+              <Clapperboard className="h-5 w-5" aria-hidden="true" />
             </span>
+
             <span className="hidden text-xl font-black tracking-[-0.03em] sm:inline xl:text-2xl">
-              Cine<span className="text-red-500">Max</span>
+              Movi<span className="text-red-500">ora</span>
             </span>
           </Link>
 
