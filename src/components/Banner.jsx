@@ -109,8 +109,8 @@ const Banner = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-red-950 via-[#111827] to-black" />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/75 to-black/20" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080a0f] via-transparent to-black/25" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.84)_0%,rgba(0,0,0,0.66)_36%,rgba(0,0,0,0.22)_65%,rgba(0,0,0,0.03)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,15,0.1)_0%,transparent_55%,rgba(8,10,15,0.88)_100%)]" />
 
       <div className="relative mx-auto flex min-h-[620px] max-w-[1600px] items-end px-5 pb-24 pt-20 sm:min-h-[680px] sm:px-8 sm:pb-28 lg:items-center lg:pb-20">
         <div className="max-w-3xl">

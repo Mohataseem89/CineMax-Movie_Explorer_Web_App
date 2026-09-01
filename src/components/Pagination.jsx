@@ -6,6 +6,7 @@ const Pagination = ({
   handleprevpage,
   handlenextpage,
   pageNo,
+  hasNextPage = true,
 }) => {
   return (
     <nav
@@ -34,7 +35,7 @@ const Pagination = ({
       <button
         type="button"
         onClick={handlenextpage}
-        disabled={loading}
+        disabled={loading || !hasNextPage}
         className="inline-flex min-h-11 items-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 text-sm font-bold text-gray-200 transition-colors hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35 sm:gap-2 sm:px-5"
         aria-label="Go to next page"
       >

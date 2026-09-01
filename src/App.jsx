@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Banner from "./components/Banner";
+import DiscoveryRows from "./components/DiscoveryRows";
 import Footer from "./components/Footer";
 import MovieDetails from "./components/MovieDetails";
 import Movies from "./components/Movies";
 import Navbar from "./components/Navbar";
 import Toast from "./components/Toast";
 import WatchList from "./components/WatchList";
+import DiscoverPage from "./pages/DiscoverPage";
+import PersonDetails from "./pages/PersonDetails";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const [watchlist, setWatchlist] = useState([]);
@@ -50,6 +54,12 @@ function App() {
     }
   }, []);
 
+  const discoveryProps = {
+    watchlist,
+    handleAddToWatchlist,
+    handleRemoveFromWatchlist,
+  };
+
   return (
     <BrowserRouter>
       <a
@@ -68,14 +78,13 @@ function App() {
             element={
               <>
                 <Banner />
-                <Movies
-                  watchlist={watchlist}
-                  handleAddToWatchlist={handleAddToWatchlist}
-                  handleRemoveFromWatchlist={handleRemoveFromWatchlist}
-                />
+                <DiscoveryRows {...discoveryProps} />
+                <Movies {...discoveryProps} />
               </>
             }
           />
+          <Route path="/discover" element={<DiscoverPage {...discoveryProps} />} />
+          <Route path="/search" element={<SearchPage {...discoveryProps} />} />
           <Route
             path="/watchlist"
             element={
@@ -85,28 +94,17 @@ function App() {
               />
             }
           />
-          <Route
-            path="/movie/:id"
-            element={
-              <MovieDetails
-                watchlist={watchlist}
-                handleAddToWatchlist={handleAddToWatchlist}
-                handleRemoveFromWatchlist={handleRemoveFromWatchlist}
-              />
-            }
-          />
+          <Route path="/movie/:id" element={<MovieDetails {...discoveryProps} />} />
+          <Route path="/person/:id" element={<PersonDetails {...discoveryProps} />} />
         </Routes>
       </main>
 
       <Footer />
 
-      <Toast
-        key={toast?.id}
-        toast={toast}
-        onClose={() => setToast(null)}
-      />
+      <Toast key={toast?.id} toast={toast} onClose={() => setToast(null)} />
     </BrowserRouter>
   );
 }
 
 export default App;
+

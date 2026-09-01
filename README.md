@@ -1,146 +1,119 @@
-# CineMax - Movie Explorer & Watchlist App
+# CineMax — Movie Explorer and Watchlist
 
-A beautiful, fast, and responsive movie browsing app built with **React**, **Vite**, **Tailwind CSS**, and **TMDb API**. CineMax lets you discover trending movies, search by genre, view detailed information, and curate your personal watchlist.
+CineMax is a responsive movie-discovery application powered by the TMDb API. It combines curated collections, advanced discovery filters, fast title search, rich movie and cast pages, trailers, recommendations, and a persistent personal watchlist.
 
+- **Live demo:** https://cine-maxapp.vercel.app/
+- **Repository:** https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App
 
-[Cinemax](https://cine-maxapp.vercel.app/)
+## Features
 
+- Weekly trending-movie hero
+- Global movie search with debounced suggestions and recent-search history
+- URL-shareable discovery filters for genre, year, rating, and sort order
+- Now playing, upcoming, top-rated, and popular movie collections
+- Paginated popular-movie browsing
+- Rich movie details with trailers, cast, key crew, genres, and release data
+- Recommendation and similar-movie collections
+- Actor and filmmaker profile pages with biography and filmography highlights
+- Persistent local watchlist
+- Watchlist search, genre filtering, and sorting
+- Responsive desktop and mobile navigation
+- Modern cinematic interface with responsive poster grids
+- Mobile card and desktop table watchlist layouts
+- Accessible watchlist controls and user feedback notifications
+- Loading, error, fallback, and retry states
+- Client-side routing with Vercel SPA rewrites
 
----
+## Technology
 
-##  Features
+| Technology | Purpose |
+| --- | --- |
+| React 19 | Component-based user interface |
+| React Router 7 | Client-side routing |
+| Tailwind CSS 4 | Responsive styling |
+| Vite 7 | Development and production builds |
+| Lucide React | Interface icons |
+| TMDb API | Movie data and imagery |
+| Vercel | Hosting and deployment |
 
-*  **Explore Movies** – Browse trending and popular movies from TMDb.
-*  **Search & Filter** – Search movies by title and filter by genre.
-*  **Detailed View** – Get full movie info: rating, release, runtime, overview, and genres.
-*  **Watchlist** – Add/remove movies to your personal watchlist (saved using `localStorage`).
-*  **Client-side Routing** – Built with React Router for seamless navigation.
-*  **Responsive UI** – Works great on mobile, tablet, and desktop.
-*  **Blazing Fast** – Built using Vite and optimized Tailwind CSS.
+## Local setup
 
----
-
-##  Tech Stack
-
-| Tech             | Description                      |
-| ---------------- | -------------------------------- |
-|  React         | JavaScript library for UI        |
-|  React Router | SPA routing                      |
-|  Tailwind CSS  | Utility-first CSS framework      |
-|  Vite           | Next-generation frontend tooling |
-|  TMDb API      | Movie data API                   |
-
----
-
-##  Installation
-
-Clone the repo and install dependencies:
+Requirements: Node.js 20 or newer and a TMDb API key.
 
 ```bash
-git clone https://github.com/your-username/cinemax.git
-cd cinemax
+git clone https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App.git
+cd CineMax-Movie_Explorer_Web_App
 npm install
-```
-
-Start the development server:
-
-```bash
+cp .env.example .env
 npm run dev
 ```
 
----
+Set your TMDb key in `.env`:
 
-##  API Key Setup
-
-This app uses the [TMDb API](https://www.themoviedb.org/documentation/api). To run the app:
-
-1. Create a free TMDb account and generate an API key.
-2. Replace the hardcoded API key in the fetch URLs:
-
-   ```js
-   const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=YOUR_API_KEY`);
-   ```
-
-> (Optional: Move this to `.env` for better security.)
-
----
-
-##  Project Structure
-
+```env
+VITE_TMDB_API_KEY=your_tmdb_api_key
 ```
-##  Folder Structure
+
+Environment variables prefixed with `VITE_` are included in the browser bundle. For a higher-traffic production application, place the TMDb credential behind an allowlisted serverless API proxy.
+
+## Available commands
 
 ```bash
-CinepMax/
-├── node_modules/
-│   
-├── src/
-│   ├── components/
-│   │   ├── Banner.jsx
-│   │   ├── MovieCards.jsx
-│   │   ├── MovieDetails.jsx
-│   │   ├── Movies.jsx
-│   │   ├── Navbar.jsx
-│   │   ├── Pagination.jsx
-│   │   └── WatchList.jsx
-│   ├── App.jsx
-│   ├── main.jsx
-│   ├── index.css
-├── .gitignore
-├── package.json
-└── index.html
-├── package-lock.json
-├── vite.config.js
-├── README.md
-└── logofav.jpg
-
+npm run dev      # Start the development server
+npm run build    # Create a production build
+npm run lint     # Run ESLint
+npm run preview  # Preview the production build
 ```
 
----
+## Project structure
 
-##  Deployment
-
-You can deploy this app easily on:
-
-* [Netlify](https://netlify.com)
-* [Vercel](https://vercel.com)
-
-> If you're using **React Router**, don’t forget to add a `_redirects` file for Netlify:
-
+```text
+src/
+├── api/
+│   └── tmdb.js
+├── components/
+│   ├── Banner.jsx
+│   ├── DiscoveryRows.jsx
+│   ├── Footer.jsx
+│   ├── MovieCards.jsx
+│   ├── MovieDetails.jsx
+│   ├── MovieResultsGrid.jsx
+│   ├── Movies.jsx
+│   ├── Navbar.jsx
+│   ├── Pagination.jsx
+│   ├── SearchBar.jsx
+│   ├── TrailerModal.jsx
+│   ├── Toast.jsx
+│   └── WatchList.jsx
+├── pages/
+│   ├── DiscoverPage.jsx
+│   ├── PersonDetails.jsx
+│   └── SearchPage.jsx
+├── utils/
+│   └── searchHistory.js
+├── App.jsx
+├── index.css
+└── main.jsx
 ```
-/*    /index.html   200
-```
 
----
+## Deployment
 
-##  Upcoming Enhancements
+The repository includes `vercel.json`, which rewrites application routes to `index.html`. This allows direct visits and refreshes on routes such as `/movie/:id`, `/person/:id`, `/discover`, and `/search`.
 
-*  Lazy loading images for faster performance
-*  Dark/light mode toggle
-*  Genre-based movie discovery
-*  PWA support for offline access
+Add `VITE_TMDB_API_KEY` to the Vercel project environment before deploying.
 
----
+## Data attribution
 
-##  Acknowledgements
+This product uses the TMDB API but is not endorsed or certified by TMDB.
 
-* [TMDb API](https://www.themoviedb.org/)
-* [Lucide Icons](https://lucide.dev/)
-* [Tailwind UI Inspiration](https://tailwindui.com/)
+Movie information and images are provided by [The Movie Database](https://www.themoviedb.org/).
 
----
-
-##  Author
+## Author
 
 **Mohataseem Khan**
- Connect with me: [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/) • [GitHub](https://github.com/Mohataseem89)
 
----
+- [LinkedIn](https://www.linkedin.com/in/mohataseem-khan/)
+- [GitHub](https://github.com/Mohataseem89)
 
-
-
-
-
----
 
 > Made with ❤️ for movie lovers.

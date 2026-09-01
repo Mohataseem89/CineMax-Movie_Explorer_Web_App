@@ -1,6 +1,7 @@
-import { Bookmark, Film, Home, Menu, X } from "lucide-react";
+import { Bookmark, Compass, Film, Home, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Navbar = ({ watchlistCount }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,44 +9,49 @@ const Navbar = ({ watchlistCount }) => {
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   const navLinks = [
     { name: "Home", path: "/", icon: Home },
+    { name: "Discover", path: "/discover", icon: Compass },
     { name: "Watchlist", path: "/watchlist", icon: Bookmark },
   ];
 
+  const isLinkActive = (path) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080a0f]/90 text-white backdrop-blur-xl">
-      <nav
-        className="mx-auto max-w-[1600px] px-5 sm:px-8"
-        aria-label="Primary navigation"
-      >
-        <div className="flex h-[72px] items-center justify-between">
+      <nav className="mx-auto max-w-[1600px] px-5 sm:px-8" aria-label="Primary navigation">
+        <div className="flex h-[72px] items-center gap-5">
           <Link
             to="/"
-            className="group flex items-center gap-3 rounded-xl"
+            className="group flex shrink-0 items-center gap-3 rounded-xl"
             aria-label="CineMax home"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 shadow-lg shadow-red-950/40 transition-transform duration-200 group-hover:scale-105">
               <Film className="h-5 w-5" aria-hidden="true" />
             </span>
-            <span className="text-xl font-black tracking-[-0.03em] sm:text-2xl">
+            <span className="hidden text-xl font-black tracking-[-0.03em] sm:inline xl:text-2xl">
               Cine<span className="text-red-500">Max</span>
             </span>
           </Link>
 
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="mx-auto hidden min-w-0 flex-1 justify-center lg:flex">
+            <SearchBar />
+          </div>
+
+          <div className="ml-auto hidden shrink-0 items-center gap-1 md:flex">
             {navLinks.map((link) => {
               const Icon = link.icon;
-              const isActive = location.pathname === link.path;
+              const isActive = isLinkActive(link.path);
 
               return (
                 <Link
                   key={link.name}
                   to={link.path}
                   className={
-                    "relative flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-semibold transition-colors " +
+                    "relative flex h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition-colors xl:px-4 " +
                     (isActive
                       ? "bg-white/10 text-white"
                       : "text-gray-400 hover:bg-white/5 hover:text-white")
@@ -53,7 +59,7 @@ const Navbar = ({ watchlistCount }) => {
                   aria-current={isActive ? "page" : undefined}
                 >
                   <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-                  {link.name}
+                  <span className="hidden xl:inline">{link.name}</span>
                   {link.name === "Watchlist" && watchlistCount > 0 && (
                     <span className="flex min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[11px] font-bold text-white">
                       {watchlistCount > 99 ? "99+" : watchlistCount}
@@ -67,7 +73,7 @@ const Navbar = ({ watchlistCount }) => {
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 text-gray-200 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+            className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 text-gray-200 transition-colors hover:bg-white/10 hover:text-white md:hidden"
             aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -91,9 +97,12 @@ const Navbar = ({ watchlistCount }) => {
         >
           <div className="min-h-0">
             <div className="rounded-2xl border border-white/10 bg-[#11151c] p-2">
+              <div className="p-2">
+                <SearchBar compact onNavigate={() => setMenuOpen(false)} />
+              </div>
               {navLinks.map((link) => {
                 const Icon = link.icon;
-                const isActive = location.pathname === link.path;
+                const isActive = isLinkActive(link.path);
 
                 return (
                   <Link
@@ -126,3 +135,4 @@ const Navbar = ({ watchlistCount }) => {
 };
 
 export default Navbar;
+
