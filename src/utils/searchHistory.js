@@ -1,7 +1,6 @@
 import { readJson, removeStoredValue, writeJson } from "./storage.js";
 
-const STORAGE_KEY = "Moviora
-_recent_searches";
+const STORAGE_KEY = "Moviora_recent_searches";
 const HISTORY_LIMIT = 6;
 
 export function getRecentSearches(storage = window.localStorage) {

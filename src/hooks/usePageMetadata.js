@@ -33,16 +33,13 @@ export function usePageMetadata({
     : "";
 
   useEffect(() => {
-    const pageTitle = title.includes("Moviora
-")
+    const pageTitle = title.includes("Moviora")
       ? title
-      : title + " | Moviora
-";
+      : title + " | Moviora";
     const canonicalUrl =
       window.location.origin + (canonicalPath || location.pathname);
     const socialImage =
-      image || window.location.origin + "/og-Moviora
-.png";
+      image || window.location.origin + "/og-Moviora.png";
 
     document.title = pageTitle;
 
@@ -53,8 +50,7 @@ export function usePageMetadata({
     upsertMeta("property", "og:type", type);
     upsertMeta("property", "og:url", canonicalUrl);
     upsertMeta("property", "og:image", socialImage);
-    upsertMeta("property", "og:site_name", "Moviora
-");
+    upsertMeta("property", "og:site_name", "Moviora");
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", pageTitle);
     upsertMeta("name", "twitter:description", description);

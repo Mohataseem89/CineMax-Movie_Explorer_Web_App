@@ -24,10 +24,8 @@ const SearchPage = ({
   usePageMetadata({
     title: query ? "Search results for " + query : "Search Movies",
     description: query
-      ? "Browse Moviora
- movie results for " + query + "."
-      : "Search Moviora
- for movies, cast information, trailers, and recommendations.",
+      ? "Browse Movioramovie results for " + query + "."
+      : "Search Moviorafor movies, cast information, trailers, and recommendations.",
     robots: "noindex,follow",
   });
 

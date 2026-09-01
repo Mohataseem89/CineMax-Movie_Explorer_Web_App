@@ -86,8 +86,7 @@ export default function MovieDetails({
     title: movie?.title || "Movie Details",
     description:
       movie?.overview?.slice(0, 155) ||
-      "Explore movie details, trailers, cast, crew, recommendations, and similar titles on Moviora
-.",
+      "Explore movie details, trailers, cast, crew, recommendations, and similar titles on Moviora.",
     image: getImageUrl(movie?.backdrop_path, "w1280"),
     type: "video.movie",
     structuredData: movie

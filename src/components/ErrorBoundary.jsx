@@ -12,8 +12,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, details) {
-    console.error("Moviora
- encountered an unexpected error:", error, details);
+    console.error("Movioraencountered an unexpected error:", error, details);
   }
 
   render() {
