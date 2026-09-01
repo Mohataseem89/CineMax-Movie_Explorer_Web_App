@@ -1,8 +1,28 @@
 {
-  "name": "cinephile",
+  "name": "cinemax-movie-explorer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A production-minded React movie discovery app powered by TMDb.",
+  "author": "Mohataseem Khan",
+  "homepage": "https://cine-maxapp.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mohataseem89/CineMax-Movie_Explorer_Web_App/issues"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "tailwind-css",
+    "tmdb",
+    "movie-discovery"
+  ],
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
