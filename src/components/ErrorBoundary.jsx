@@ -12,7 +12,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, details) {
-    console.error("FlickMuseencountered an unexpected error:", error, details);
+    console.error("FlickMuse encountered an unexpected error:", error, details);
   }
 
   render() {
@@ -53,4 +53,3 @@ export default class ErrorBoundary extends Component {
     );
   }
 }
-

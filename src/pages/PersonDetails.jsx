@@ -8,6 +8,7 @@ import {
 } from "../api/tmdb";
 import MovieResultsGrid from "../components/MovieResultsGrid";
 import { usePageMetadata } from "../hooks/usePageMetadata";
+import { textForMeta } from "../seo/site";
 
 export default function PersonDetails({
   watchlist,
@@ -24,7 +25,7 @@ export default function PersonDetails({
   usePageMetadata({
     title: person?.name || "Person Profile",
     description:
-      person?.biography?.slice(0, 155) ||
+      (person?.biography ? textForMeta(person.biography) : undefined) ||
       "Explore this film professional's biography and movie credits on FlickMuse.",
     image: getImageUrl(person?.profile_path, "h632"),
     type: "profile",

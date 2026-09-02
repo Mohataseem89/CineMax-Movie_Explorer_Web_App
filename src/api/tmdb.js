@@ -1,5 +1,3 @@
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const API_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const DEFAULT_CACHE_TIME = 5 * 60 * 1000;
 const responseCache = new Map();
@@ -35,12 +33,6 @@ async function tmdbRequest(
   path,
   { params = {}, signal, cacheTime = DEFAULT_CACHE_TIME } = {}
 ) {
-  if (!API_KEY) {
-    throw new Error(
-      "TMDb API key is missing. Add VITE_TMDB_API_KEY to your environment."
-    );
-  }
-
   const normalizedParams = Object.fromEntries(
     Object.entries(params).filter(
       ([, value]) => value !== undefined && value !== null && value !== ""
@@ -61,9 +53,9 @@ async function tmdbRequest(
   let request = inFlightRequests.get(requestKey);
 
   if (!request) {
-    const url = new URL(API_BASE_URL + path);
+    const url = new URL("/api/tmdb", window.location.origin);
     url.search = new URLSearchParams({
-      api_key: API_KEY,
+      path,
       ...Object.fromEntries(publicParams),
     }).toString();
     const requestController = new AbortController();

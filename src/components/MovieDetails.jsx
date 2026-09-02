@@ -13,6 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getImageUrl, getMovieBundle } from "../api/tmdb";
 import { usePageMetadata } from "../hooks/usePageMetadata";
+import { absoluteUrl, textForMeta } from "../seo/site";
 import MovieCards from "./MovieCards";
 import TrailerModal from "./TrailerModal";
 
@@ -83,30 +84,44 @@ export default function MovieDetails({
   const [error, setError] = useState("");
 
   usePageMetadata({
-    title: movie?.title || "Movie Details",
+    title: movie
+      ? [
+          movie.title,
+          movie.release_date?.slice(0, 4),
+          movie.genres?.slice(0, 2).map((genre) => genre.name).join(", "),
+        ]
+          .filter(Boolean)
+          .join(" — ")
+      : "Movie Details",
     description:
-      movie?.overview?.slice(0, 155) ||
-      "Explore movie details, trailers, cast, crew, recommendations, and similar titles on FlickMuse.",
+      movie?.overview
+        ? textForMeta(movie.overview)
+        : "Explore movie details, trailers, cast, crew, recommendations, and similar titles on FlickMuse.",
     image: getImageUrl(movie?.backdrop_path, "w1280"),
     type: "video.movie",
     structuredData: movie
       ? {
           "@context": "https://schema.org",
-          "@type": "Movie",
-          name: movie.title,
-          description: movie.overview || undefined,
-          image: getImageUrl(movie.poster_path, "w500"),
-          dateCreated: movie.release_date || undefined,
-          duration: movie.runtime ? "PT" + movie.runtime + "M" : undefined,
-          aggregateRating:
-            movie.vote_count > 0
-              ? {
-                  "@type": "AggregateRating",
-                  ratingValue: movie.vote_average,
-                  ratingCount: movie.vote_count,
-                  bestRating: 10,
-                }
-              : undefined,
+          "@graph": [
+            {
+              "@type": "Movie",
+              "@id": absoluteUrl("/movie/" + movie.id),
+              name: movie.title,
+              description: movie.overview || undefined,
+              image: getImageUrl(movie.poster_path, "w500") || undefined,
+              dateCreated: movie.release_date || undefined,
+              duration: movie.runtime ? "PT" + movie.runtime + "M" : undefined,
+              genre: movie.genres?.map((genre) => genre.name),
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+                { "@type": "ListItem", position: 2, name: "Movie", item: absoluteUrl("/movie/" + movie.id) },
+                { "@type": "ListItem", position: 3, name: movie.title },
+              ],
+            },
+          ],
         }
       : undefined,
   });

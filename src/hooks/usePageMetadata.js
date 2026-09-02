@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
-const DEFAULT_DESCRIPTION =
-  "Discover trending, popular, upcoming, and top-rated movies with trailers, cast information, recommendations, and a personal watchlist.";
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_SOCIAL_IMAGE,
+  SITE_NAME,
+  absoluteUrl,
+} from "../seo/site";
 
 function upsertMeta(attribute, key, content) {
   let element = document.head.querySelector(
@@ -33,13 +36,11 @@ export function usePageMetadata({
     : "";
 
   useEffect(() => {
-    const pageTitle = title.includes("FlickMuse")
+    const pageTitle = title.includes(SITE_NAME)
       ? title
-      : title + " | FlickMuse";
-    const canonicalUrl =
-      window.location.origin + (canonicalPath || location.pathname);
-    const socialImage =
-      image || window.location.origin + "/og-FlickMuse.png";
+      : title + " | " + SITE_NAME;
+    const canonicalUrl = absoluteUrl(canonicalPath || location.pathname);
+    const socialImage = image || DEFAULT_SOCIAL_IMAGE;
 
     document.title = pageTitle;
 
@@ -50,7 +51,7 @@ export function usePageMetadata({
     upsertMeta("property", "og:type", type);
     upsertMeta("property", "og:url", canonicalUrl);
     upsertMeta("property", "og:image", socialImage);
-    upsertMeta("property", "og:site_name", "FlickMuse");
+    upsertMeta("property", "og:site_name", SITE_NAME);
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", pageTitle);
     upsertMeta("name", "twitter:description", description);
@@ -85,4 +86,3 @@ export function usePageMetadata({
     type,
   ]);
 }
-

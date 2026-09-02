@@ -32,7 +32,8 @@ export default function DiscoverPage({
   usePageMetadata({
     title: "Discover Movies by Genre, Year and Rating",
     description:
-      "Browse movies using genre, release year, rating, and popularity filters to quickly find your next watch.",
+      "Find movies by genre, release year, rating, and popularity with FlickMuse filters for your next watch.",
+    canonicalPath: "/discover",
   });
 
   const filters = useMemo(

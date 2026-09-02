@@ -144,7 +144,7 @@ const Banner = () => {
   return (
     <section
       className="relative isolate min-h-[620px] overflow-hidden bg-[#0d1118] text-white sm:min-h-[680px]"
-      aria-labelledby="featured-movie-title"
+      aria-labelledby="flickmuse-discovery-title"
     >
       {backdropUrl ? (
         <img
@@ -172,11 +172,18 @@ const Banner = () => {
           </div>
 
           <h1
+            id="flickmuse-discovery-title"
+            className="max-w-3xl text-xl font-black tracking-[-0.025em] text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.8)] sm:text-2xl"
+          >
+            Discover movies, trailers, and cast
+          </h1>
+
+          <h2
             id="featured-movie-title"
-            className="max-w-3xl text-[clamp(2.5rem,7vw,5.75rem)] font-black leading-[0.95] tracking-[-0.055em] text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.8)]"
+            className="mt-3 max-w-3xl text-[clamp(2.5rem,7vw,5.75rem)] font-black leading-[0.95] tracking-[-0.055em] text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.8)]"
           >
             {currentMovie.title}
-          </h1>
+          </h2>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-semibold text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.95)] sm:text-base">
             <span className="flex items-center gap-2">

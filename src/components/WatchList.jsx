@@ -49,7 +49,7 @@ const WatchList = ({ watchlist, handleRemoveFromWatchlist }) => {
 
   usePageMetadata({
     title: "My Watchlist",
-    description: "Review and organize movies saved to your personal FlickMusewatchlist.",
+    description: "Review and organize movies saved to your personal FlickMuse watchlist.",
     robots: "noindex,nofollow",
   });
 

@@ -5,7 +5,7 @@ import { usePageMetadata } from "../hooks/usePageMetadata";
 export default function NotFoundPage() {
   usePageMetadata({
     title: "Page Not Found",
-    description: "The requested FlickMusepage could not be found.",
+    description: "The requested FlickMuse page could not be found.",
     robots: "noindex,nofollow",
   });
 
@@ -35,4 +35,3 @@ export default function NotFoundPage() {
     </section>
   );
 }
-

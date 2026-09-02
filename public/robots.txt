@@ -3,5 +3,4 @@ Allow: /
 Disallow: /search
 Disallow: /watchlist
 
-Sitemap: https://FlickMuse.mohataseem.com/sitemap.xml
-
+Sitemap: https://flickmuse.mohataseem.com/sitemap.xml
