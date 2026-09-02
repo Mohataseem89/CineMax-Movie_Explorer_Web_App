@@ -1,16 +1,16 @@
 {
-  "name": "FilmWick-movie-explorer",
+  "name": "FlickMuse-movie-explorer",
   "private": true,
   "version": "1.0.0",
   "description": "A production-minded React movie discovery app powered by TMDb.",
   "author": "Mohataseem Khan",
-  "homepage": "https://filmwick.mohataseem.com/",
+  "homepage": "https://FlickMuse.mohataseem.com/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mohataseem89/FilmWick-Movie_Explorer_Web_App.git"
+    "url": "git+https://github.com/Mohataseem89/FlickMuse-Movie_Explorer_Web_App.git"
   },
   "bugs": {
-    "url": "https://github.com/Mohataseem89/FilmWick-Movie_Explorer_Web_App/issues"
+    "url": "https://github.com/Mohataseem89/FlickMuse-Movie_Explorer_Web_App/issues"
   },
   "keywords": [
     "react",

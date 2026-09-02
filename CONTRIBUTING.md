@@ -1,7 +1,7 @@
-# Contributing to FilmWick
+# Contributing to FlickMuse
 
 
-Thank you for improving FilmWick
+Thank you for improving FlickMuse
 . Keep changes focused, explain the user impact, and preserve the application's responsive and accessible behavior.
 
 ## Set up the project

@@ -1,6 +1,6 @@
 # Changelog
 
-Notable changes to FilmWick
+Notable changes to FlickMuse
  are documented here. The project follows semantic versioning for portfolio releases.
 
 ## [1.0.0] — 2026-09-01
@@ -27,7 +27,7 @@ Notable changes to FilmWick
 - Reworked the visual system into a brighter cinematic interface
 - Corrected the upcoming collection to use future release dates
 - Improved hero and movie-detail backdrop visibility
-- Renamed the package to `FilmWick
+- Renamed the package to `FlickMuse
 -movie-explorer`
 
 ### Security

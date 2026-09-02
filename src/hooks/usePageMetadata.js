@@ -33,13 +33,13 @@ export function usePageMetadata({
     : "";
 
   useEffect(() => {
-    const pageTitle = title.includes("FilmWick")
+    const pageTitle = title.includes("FlickMuse")
       ? title
-      : title + " | FilmWick";
+      : title + " | FlickMuse";
     const canonicalUrl =
       window.location.origin + (canonicalPath || location.pathname);
     const socialImage =
-      image || window.location.origin + "/og-FilmWick.png";
+      image || window.location.origin + "/og-FlickMuse.png";
 
     document.title = pageTitle;
 
@@ -50,7 +50,7 @@ export function usePageMetadata({
     upsertMeta("property", "og:type", type);
     upsertMeta("property", "og:url", canonicalUrl);
     upsertMeta("property", "og:image", socialImage);
-    upsertMeta("property", "og:site_name", "FilmWick");
+    upsertMeta("property", "og:site_name", "FlickMuse");
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", pageTitle);
     upsertMeta("name", "twitter:description", description);

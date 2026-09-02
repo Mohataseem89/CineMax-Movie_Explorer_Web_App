@@ -3,5 +3,5 @@ Allow: /
 Disallow: /search
 Disallow: /watchlist
 
-Sitemap: https://filmwick.mohataseem.com/sitemap.xml
+Sitemap: https://FlickMuse.mohataseem.com/sitemap.xml
 

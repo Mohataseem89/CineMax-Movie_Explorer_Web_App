@@ -25,7 +25,7 @@ export default function PersonDetails({
     title: person?.name || "Person Profile",
     description:
       person?.biography?.slice(0, 155) ||
-      "Explore this film professional's biography and movie credits on FilmWick.",
+      "Explore this film professional's biography and movie credits on FlickMuse.",
     image: getImageUrl(person?.profile_path, "h632"),
     type: "profile",
     structuredData: person
