@@ -48,7 +48,7 @@ const Navbar = ({ watchlistCount }) => {
             </span>
 
             <span className="hidden text-xl font-black tracking-[-0.03em] sm:inline xl:text-2xl">
-              Film<span className="text-red-500">Trail</span>
+              Film<span className="text-red-500">Wick</span>
             </span>
           </Link>
 
