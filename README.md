@@ -11,7 +11,7 @@
 FilmWick
  is a production-minded movie discovery application built with React and the TMDb API. It turns browsing into a focused workflow: discover with shareable filters, inspect rich movie and cast details, watch trailers, and keep a persistent personal watchlist.
 
-[View live demo](https://cine-maxapp.vercel.app/) · [Browse the source](https://github.com/Mohataseem89/FilmWick
+[View live demo](https://filmwick.mohataseem.com/) · [Browse the source](https://github.com/Mohataseem89/FilmWick
 -Movie_Explorer_Web_App) · [Read the case study](docs/PORTFOLIO.md)
 
 ![FilmWick

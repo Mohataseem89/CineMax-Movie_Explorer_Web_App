@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A production-minded React movie discovery app powered by TMDb.",
   "author": "Mohataseem Khan",
-  "homepage": "https://cine-maxapp.vercel.app/",
+  "homepage": "https://filmwick.mohataseem.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mohataseem89/FilmWick-Movie_Explorer_Web_App.git"
