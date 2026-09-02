@@ -1,7 +1,7 @@
-# Contributing to Moviora
+# Contributing to FilmWick
 
 
-Thank you for improving Moviora
+Thank you for improving FilmWick
 . Keep changes focused, explain the user impact, and preserve the application's responsive and accessible behavior.
 
 ## Set up the project

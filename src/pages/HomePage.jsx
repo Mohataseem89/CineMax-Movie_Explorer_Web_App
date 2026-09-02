@@ -5,13 +5,13 @@ import { usePageMetadata } from "../hooks/usePageMetadata";
 
 export default function HomePage(props) {
   usePageMetadata({
-    title: "Moviora— Discover Movies, Trailers and Cast",
+    title: "FilmWick— Discover Movies, Trailers and Cast",
     description:
       "Discover trending, popular, upcoming, and top-rated movies. Watch trailers, explore cast profiles, and build your personal watchlist.",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "Moviora",
+      name: "FilmWick",
       url: window.location.origin + "/",
       potentialAction: {
         "@type": "SearchAction",

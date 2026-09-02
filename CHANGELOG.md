@@ -1,6 +1,6 @@
 # Changelog
 
-Notable changes to Moviora
+Notable changes to FilmWick
  are documented here. The project follows semantic versioning for portfolio releases.
 
 ## [1.0.0] — 2026-09-01
@@ -27,7 +27,7 @@ Notable changes to Moviora
 - Reworked the visual system into a brighter cinematic interface
 - Corrected the upcoming collection to use future release dates
 - Improved hero and movie-detail backdrop visibility
-- Renamed the package to `Moviora
+- Renamed the package to `FilmWick
 -movie-explorer`
 
 ### Security

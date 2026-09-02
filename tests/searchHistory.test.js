@@ -36,7 +36,7 @@ test("recent search history keeps no more than six entries", () => {
 
 test("recent searches recover from malformed data and can be cleared", () => {
   const storage = new MemoryStorage({
-    Moviora
+    FilmWick
 _recent_searches: "invalid-json",
   });
 

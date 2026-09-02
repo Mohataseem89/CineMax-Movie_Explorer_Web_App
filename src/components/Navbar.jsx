@@ -41,14 +41,14 @@ const Navbar = ({ watchlistCount }) => {
           <Link
             to="/"
             className="group flex shrink-0 items-center gap-3 rounded-xl"
-            aria-label="Moviora home"
+            aria-label="FilmWick home"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 shadow-lg shadow-red-950/40 transition-transform duration-200 group-hover:scale-105">
               <Clapperboard className="h-5 w-5" aria-hidden="true" />
             </span>
 
             <span className="hidden text-xl font-black tracking-[-0.03em] sm:inline xl:text-2xl">
-              Movi<span className="text-red-500">ora</span>
+              Film<span className="text-red-500">Trail</span>
             </span>
           </Link>
 

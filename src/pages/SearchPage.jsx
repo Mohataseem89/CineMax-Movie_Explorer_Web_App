@@ -24,8 +24,8 @@ const SearchPage = ({
   usePageMetadata({
     title: query ? "Search results for " + query : "Search Movies",
     description: query
-      ? "Browse Movioramovie results for " + query + "."
-      : "Search Moviorafor movies, cast information, trailers, and recommendations.",
+      ? "Browse FilmWick movie results for " + query + "."
+      : "Search FilmWick for movies, cast information, trailers, and recommendations.",
     robots: "noindex,follow",
   });
 
@@ -74,7 +74,7 @@ const SearchPage = ({
             <Search className="h-8 w-8" aria-hidden="true" />
           </span>
           <h1 className="mt-6 text-4xl font-black tracking-[-0.045em] sm:text-5xl">
-            Search Moviora
+            Search FilmWick
 
           </h1>
           <p className="mt-4 leading-7 text-gray-400">

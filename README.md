@@ -1,26 +1,26 @@
-# Moviora
+# FilmWick
  — Modern Movie Discovery
 
-[![CI](https://github.com/Mohataseem89/Moviora
--Movie_Explorer_Web_App/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohataseem89/Moviora
+[![CI](https://github.com/Mohataseem89/FilmWick
+-Movie_Explorer_Web_App/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohataseem89/FilmWick
 -Movie_Explorer_Web_App/actions/workflows/ci.yml)
 [![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![TMDb](https://img.shields.io/badge/Data-TMDb-01B4E4)](https://developer.themoviedb.org/)
 
-Moviora
+FilmWick
  is a production-minded movie discovery application built with React and the TMDb API. It turns browsing into a focused workflow: discover with shareable filters, inspect rich movie and cast details, watch trailers, and keep a persistent personal watchlist.
 
-[View live demo](https://cine-maxapp.vercel.app/) · [Browse the source](https://github.com/Mohataseem89/Moviora
+[View live demo](https://cine-maxapp.vercel.app/) · [Browse the source](https://github.com/Mohataseem89/FilmWick
 -Movie_Explorer_Web_App) · [Read the case study](docs/PORTFOLIO.md)
 
-![Moviora
- branded social preview](public/og-Moviora
+![FilmWick
+ branded social preview](public/og-FilmWick
 .png)
 
 ## Why this project matters
 
-Moviora
+FilmWick
  demonstrates more than API rendering. The current implementation includes route-level code splitting, a reusable request layer with caching and duplicate-request deduplication, URL-driven filter state, resilient browser persistence, dynamic page metadata, structured data, accessibility affordances, and automated regression checks.
 
 ### Product highlights
@@ -97,9 +97,9 @@ The application intentionally has no custom backend or account system. Watchlist
 - A [TMDb API key](https://developer.themoviedb.org/docs/getting-started)
 
 ```bash
-git clone https://github.com/Mohataseem89/Moviora
+git clone https://github.com/Mohataseem89/FilmWick
 -Movie_Explorer_Web_App.git
-cd Moviora
+cd FilmWick
 -Movie_Explorer_Web_App
 npm install
 cp .env.example .env
