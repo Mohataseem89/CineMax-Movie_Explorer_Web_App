@@ -36,8 +36,7 @@ test("recent search history keeps no more than six entries", () => {
 
 test("recent searches recover from malformed data and can be cleared", () => {
   const storage = new MemoryStorage({
-    FlickMuse
-_recent_searches: "invalid-json",
+    FlickMuse_recent_searches: "invalid-json",
   });
 
   assert.deepEqual(getRecentSearches(storage), []);
